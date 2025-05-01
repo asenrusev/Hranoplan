@@ -29,12 +29,12 @@ export default function PlanPage() {
 
   const productCategories = [
     {
-      name: "Vegetables",
-      items: ["Mushrooms", "Eggplant", "Bell Peppers", "Onions", "Garlic"],
+      name: "Зеленчуци",
+      items: ["Гъби", "Патладжан", "Чушки", "Лук", "Чесън"],
     },
     {
-      name: "Meat",
-      items: ["Beef", "Pork", "Chicken", "Fish", "Lamb"],
+      name: "Месо",
+      items: ["Говеждо", "Свинско", "Пилешко", "Риба", "Агнешко"],
     },
   ];
 
@@ -49,18 +49,18 @@ export default function PlanPage() {
   return (
     <main className="min-h-screen p-8 max-w-4xl mx-auto">
       <h1 className="text-4xl font-bold mb-4 text-center">
-        Create Your Meal Plan
+        Създайте Вашия Хранителен План
       </h1>
       <p className="text-lg text-center mb-8 text-gray-600 dark:text-gray-300">
-        Tell us your preferences and we&apos;ll create a personalized meal plan
-        that fits your needs
+        Кажете ни вашите предпочитания и ще създадем персонализиран хранителен
+        план, който отговаря на вашите нужди
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
           <div>
             <label htmlFor="days" className="block text-sm font-medium mb-2">
-              Number of Days to Meal Prep
+              Брой дни за приготвяне на храна
             </label>
             <select
               id="days"
@@ -68,13 +68,13 @@ export default function PlanPage() {
               required
               className="w-full p-2 border rounded-lg bg-transparent"
             >
-              <option value="1">1 day</option>
-              <option value="2">2 days</option>
-              <option value="3">3 days</option>
-              <option value="4">4 days</option>
-              <option value="5">5 days</option>
-              <option value="6">6 days</option>
-              <option value="7">7 days</option>
+              <option value="1">1 ден</option>
+              <option value="2">2 дни</option>
+              <option value="3">3 дни</option>
+              <option value="4">4 дни</option>
+              <option value="5">5 дни</option>
+              <option value="6">6 дни</option>
+              <option value="7">7 дни</option>
             </select>
           </div>
 
@@ -83,7 +83,7 @@ export default function PlanPage() {
               htmlFor="servings"
               className="block text-sm font-medium mb-2"
             >
-              Servings per Day
+              Порции на ден
             </label>
             <select
               id="servings"
@@ -91,11 +91,11 @@ export default function PlanPage() {
               required
               className="w-full p-2 border rounded-lg bg-transparent"
             >
-              <option value="1">1 serving</option>
-              <option value="2">2 servings</option>
-              <option value="3">3 servings</option>
-              <option value="4">4 servings</option>
-              <option value="5">5 servings</option>
+              <option value="1">1 порция</option>
+              <option value="2">2 порции</option>
+              <option value="3">3 порции</option>
+              <option value="4">4 порции</option>
+              <option value="5">5 порции</option>
             </select>
           </div>
 
@@ -104,7 +104,7 @@ export default function PlanPage() {
               htmlFor="prepTime"
               className="block text-sm font-medium mb-2"
             >
-              Maximum Preparation Time
+              Максимално време за приготвяне
             </label>
             <select
               id="prepTime"
@@ -112,16 +112,16 @@ export default function PlanPage() {
               required
               className="w-full p-2 border rounded-lg bg-transparent"
             >
-              <option value="15">15 minutes</option>
-              <option value="30">30 minutes</option>
-              <option value="60">1 hour</option>
-              <option value="any">Doesn&apos;t matter</option>
+              <option value="15">15 минути</option>
+              <option value="30">30 минути</option>
+              <option value="60">1 час</option>
+              <option value="any">Няма значение</option>
             </select>
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-2">
-              Exclude Products
+              Изключете Продукти
             </label>
             <div className="space-y-4">
               {productCategories.map((category) => (
@@ -153,7 +153,7 @@ export default function PlanPage() {
           type="submit"
           className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
         >
-          Generate Meal Plan
+          Генерирай Хранителен План
         </button>
       </form>
     </main>
