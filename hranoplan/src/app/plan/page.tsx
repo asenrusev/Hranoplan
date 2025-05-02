@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface MealPlanFormData {
   days: number;
@@ -11,9 +12,12 @@ interface MealPlanFormData {
 
 export default function PlanPage() {
   const [excludedProducts, setExcludedProducts] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
     const formData = new FormData(event.currentTarget);
 
     const planData: MealPlanFormData = {
@@ -23,8 +27,34 @@ export default function PlanPage() {
       excludedProducts: excludedProducts,
     };
 
-    console.log("Form submitted with data:", planData);
-    // TODO: Handle the meal plan generation
+    try {
+      const response = await fetch("/api/mealprep", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(planData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to generate meal plan");
+      }
+
+      const mealPlan = await response.json();
+      // Generate a unique ID for the plan (using timestamp + random string)
+      const planId = `${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2, 9)}`;
+
+      // Store the plan in localStorage (since we don't have a database)
+      localStorage.setItem(`mealPlan-${planId}`, JSON.stringify(mealPlan));
+
+      // Navigate to the plan page
+      router.push(`/plan/${planId}`);
+    } catch (error) {
+      console.error("Error generating meal plan:", error);
+      setIsLoading(false);
+    }
   };
 
   const productCategories = [
@@ -47,115 +77,140 @@ export default function PlanPage() {
   };
 
   return (
-    <main className="min-h-screen p-8 max-w-4xl mx-auto">
-      <h1 className="text-4xl font-bold mb-4 text-center">
-        Създайте Вашия Хранителен План
-      </h1>
-      <p className="text-lg text-center mb-8 text-gray-600 dark:text-gray-300">
-        Кажете ни вашите предпочитания и ще създадем персонализиран хранителен
-        план, който отговаря на вашите нужди
-      </p>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="days" className="block text-sm font-medium mb-2">
-              Брой дни за приготвяне на храна
-            </label>
-            <select
-              id="days"
-              name="days"
-              required
-              className="w-full p-2 border rounded-lg bg-transparent"
-            >
-              <option value="1">1 ден</option>
-              <option value="2">2 дни</option>
-              <option value="3">3 дни</option>
-              <option value="4">4 дни</option>
-              <option value="5">5 дни</option>
-              <option value="6">6 дни</option>
-              <option value="7">7 дни</option>
-            </select>
-          </div>
-
-          <div>
-            <label
-              htmlFor="servings"
-              className="block text-sm font-medium mb-2"
-            >
-              Порции на ден
-            </label>
-            <select
-              id="servings"
-              name="servings"
-              required
-              className="w-full p-2 border rounded-lg bg-transparent"
-            >
-              <option value="1">1 порция</option>
-              <option value="2">2 порции</option>
-              <option value="3">3 порции</option>
-              <option value="4">4 порции</option>
-              <option value="5">5 порции</option>
-            </select>
-          </div>
-
-          <div>
-            <label
-              htmlFor="prepTime"
-              className="block text-sm font-medium mb-2"
-            >
-              Максимално време за приготвяне
-            </label>
-            <select
-              id="prepTime"
-              name="prepTime"
-              required
-              className="w-full p-2 border rounded-lg bg-transparent"
-            >
-              <option value="15">15 минути</option>
-              <option value="30">30 минути</option>
-              <option value="60">1 час</option>
-              <option value="any">Няма значение</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Изключете Продукти
-            </label>
-            <div className="space-y-4">
-              {productCategories.map((category) => (
-                <div key={category.name} className="space-y-2">
-                  <h3 className="font-medium">{category.name}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {category.items.map((item) => (
-                      <button
-                        key={item}
-                        type="button"
-                        onClick={() => toggleProduct(item)}
-                        className={`px-3 py-1 rounded-full text-sm ${
-                          excludedProducts.includes(item)
-                            ? "bg-red-500 text-white"
-                            : "bg-gray-200 dark:bg-gray-700"
-                        }`}
-                      >
-                        {item}
-                      </button>
-                    ))}
+    <main className="min-h-screen p-4 md:p-8 max-w-2xl mx-auto bg-white text-[#222]">
+      <div className="w-full bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+        <h1 className="text-4xl font-extrabold mb-4 text-center text-[#2E5E4E]">
+          Създайте Вашия Хранителен План
+        </h1>
+        <p className="text-lg text-center mb-8 text-gray-700">
+          Кажете ни вашите предпочитания и ще създадем персонализиран хранителен
+          план, който отговаря на вашите нужди
+        </p>
+        <form onSubmit={handleSubmit} className="space-y-6 w-full">
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="days" className="block text-sm font-medium mb-2">
+                Брой дни за приготвяне на храна
+              </label>
+              <select
+                id="days"
+                name="days"
+                required
+                className="w-full p-2 border rounded-lg bg-white"
+              >
+                <option value="1">1 ден</option>
+                <option value="2">2 дни</option>
+                <option value="3">3 дни</option>
+                <option value="4">4 дни</option>
+                <option value="5">5 дни</option>
+                <option value="6">6 дни</option>
+                <option value="7">7 дни</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="servings"
+                className="block text-sm font-medium mb-2"
+              >
+                Порции на ден
+              </label>
+              <select
+                id="servings"
+                name="servings"
+                required
+                className="w-full p-2 border rounded-lg bg-white"
+              >
+                <option value="1">1 порция</option>
+                <option value="2">2 порции</option>
+                <option value="3">3 порции</option>
+                <option value="4">4 порции</option>
+                <option value="5">5 порции</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="prepTime"
+                className="block text-sm font-medium mb-2"
+              >
+                Максимално време за приготвяне
+              </label>
+              <select
+                id="prepTime"
+                name="prepTime"
+                required
+                className="w-full p-2 border rounded-lg bg-white"
+              >
+                <option value="15">15 минути</option>
+                <option value="30">30 минути</option>
+                <option value="60">1 час</option>
+                <option value="any">Няма значение</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Изключете Продукти
+              </label>
+              <div className="space-y-4">
+                {productCategories.map((category) => (
+                  <div key={category.name} className="space-y-2">
+                    <h3 className="font-medium text-[#2E5E4E]">
+                      {category.name}
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {category.items.map((item) => (
+                        <button
+                          key={item}
+                          type="button"
+                          onClick={() => toggleProduct(item)}
+                          className={`px-3 py-1 rounded-full text-sm border transition-colors duration-150 ${
+                            excludedProducts.includes(item)
+                              ? "bg-[#F9E6E6] text-[#B94A48] border-[#B94A48]"
+                              : "bg-gray-100 text-[#2E5E4E] border-[#E6F4EA] hover:bg-[#E6F4EA]"
+                          }`}
+                        >
+                          {item}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-        >
-          Генерирай Хранителен План
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-[#2E5E4E] hover:bg-[#21806A] text-white font-semibold py-3 px-6 rounded-lg transition-colors text-lg shadow disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8z"
+                  />
+                </svg>
+                Генериране...
+              </div>
+            ) : (
+              "Генерирай план"
+            )}
+          </button>
+        </form>
+      </div>
     </main>
   );
 }
