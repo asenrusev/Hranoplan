@@ -1,6 +1,6 @@
 # Hranoplan
 
-[Hranoplan](https://hranoplan-jiyrfx5t1-asenrusevs-projects.vercel.app/) is a modern web application for meal planning, specifically designed for the Bulgarian market. It helps users organize and plan their weekly meals with ease.
+[Hranoplan](https://hranoplan.vercel.app/) is a modern web application for meal planning, specifically designed for the Bulgarian market. It helps users organize and plan their weekly meals with ease.
 
 ## 🚀 Technologies
 
