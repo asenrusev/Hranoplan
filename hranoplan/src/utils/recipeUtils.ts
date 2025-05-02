@@ -51,12 +51,15 @@ export function getRecipeById(id: string): Recipe | undefined {
   return getRecipes().find((recipe) => recipe.id === id);
 }
 
-export function filterRecipesByPrepTime(maxPrepTime: string): Recipe[] {
+export function filterRecipesByPrepTime(
+  recipes: Recipe[],
+  maxPrepTime: string
+): Recipe[] {
   if (maxPrepTime === "any") {
-    return getRecipes();
+    return recipes;
   }
   const maxTime = parseInt(maxPrepTime);
-  return getRecipes().filter((recipe) => parseInt(recipe.prepTime) <= maxTime);
+  return recipes.filter((recipe) => parseInt(recipe.prepTime) <= maxTime);
 }
 
 export function filterRecipesByServings(servings: number): Recipe[] {
@@ -75,41 +78,33 @@ export function generateMealPlan(
   prepTime: string,
   excludedProducts: string[] = []
 ): Recipe[] {
-  console.log("Starting meal plan generation with:", {
-    days,
-    servingsPerDay,
-    prepTime,
-    excludedProducts,
-  });
   let availableRecipes = getRecipes();
-  console.log("Initial recipes count:", availableRecipes.length);
 
   // Filter out recipes with excluded products
   if (excludedProducts.length > 0) {
-    availableRecipes = availableRecipes.filter(
-      (recipe) =>
-        !recipe.ingredients.some((ingredient) =>
-          excludedProducts.some((excluded) =>
-            ingredient.name.toLowerCase().includes(excluded.toLowerCase())
-          )
-        )
-    );
-    console.log("After excluding products:", availableRecipes.length);
+    availableRecipes = availableRecipes.filter((recipe) => {
+      const hasExcludedIngredient = recipe.ingredients.some((ingredient) => {
+        const ingredientName = ingredient.name.toLowerCase();
+        return excludedProducts.some((excluded) => {
+          const excludedName = excluded.toLowerCase();
+          const isExcluded = ingredientName === excludedName;
+          return isExcluded;
+        });
+      });
+      return !hasExcludedIngredient;
+    });
   }
 
   // Filter by prep time (using prepTime instead of totalTime)
-  availableRecipes = filterRecipesByPrepTime(prepTime);
-  console.log("After prep time filter:", availableRecipes.length, "recipes");
+  availableRecipes = filterRecipesByPrepTime(availableRecipes, prepTime);
 
   // If no recipes match the criteria, return all recipes
   if (availableRecipes.length === 0) {
-    console.warn("No recipes match the specified criteria, using all recipes");
     availableRecipes = getRecipes();
   }
 
   // Calculate total number of meals needed
   const totalMealsNeeded = days * servingsPerDay;
-  console.log("Total meals needed:", totalMealsNeeded);
 
   // Randomly select recipes for the meal plan
   const selectedRecipes: Recipe[] = [];
@@ -133,7 +128,6 @@ export function generateMealPlan(
     selectedRecipes.push(recipe);
   }
 
-  console.log("Final selected recipes:", selectedRecipes.length);
   return selectedRecipes;
 }
 

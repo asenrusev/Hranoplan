@@ -11,8 +11,6 @@ interface MealPlanRequestData {
 export async function POST(request: Request) {
   try {
     const data: MealPlanRequestData = await request.json();
-    console.log("API received data:", data);
-
     // Validate the input data
     if (!data.days || !data.servingsPerDay || !data.prepTime) {
       return NextResponse.json(
@@ -28,7 +26,6 @@ export async function POST(request: Request) {
       data.prepTime,
       data.excludedProducts
     );
-    console.log("Generated meal plan:", JSON.stringify(mealPlan, null, 2));
 
     const response = {
       success: true,
@@ -38,7 +35,6 @@ export async function POST(request: Request) {
         requestParams: data,
       },
     };
-    console.log("API response:", JSON.stringify(response, null, 2));
 
     return NextResponse.json(response);
   } catch (error) {

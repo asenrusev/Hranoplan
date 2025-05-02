@@ -42,14 +42,12 @@ export default function MealPlanPage() {
     if (storedPlan) {
       try {
         const parsedPlan = JSON.parse(storedPlan);
-        console.log("Parsed plan:", JSON.stringify(parsedPlan, null, 2));
 
         // Ensure we're using the correct data structure
         const mealPlanData = {
           ...parsedPlan.data.requestParams,
           meals: parsedPlan.data.mealPlan || [],
         };
-        console.log("Meal plan data:", JSON.stringify(mealPlanData, null, 2));
 
         if (!mealPlanData.meals || mealPlanData.meals.length === 0) {
           console.error("No meals found in the plan data");
