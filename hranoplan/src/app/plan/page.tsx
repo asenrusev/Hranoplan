@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface MealPlanFormData {
@@ -13,12 +13,65 @@ interface MealPlanFormData {
 export default function PlanPage() {
   const [excludedProducts, setExcludedProducts] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showExclusions, setShowExclusions] = useState<boolean>(false);
   const router = useRouter();
+
+  const productCategories = [
+    {
+      name: "Зеленчуци",
+      items: [
+        "Гъби",
+        "Патладжан",
+        "Чушки",
+        "Лук",
+        "Чесън",
+        "Домати",
+        "Краставици",
+        "Моркови",
+        "Тиквички",
+        "Картофи",
+        "Зеле",
+        "Целина",
+      ],
+    },
+    {
+      name: "Месо",
+      items: ["Говеждо", "Свинско", "Пилешко", "Риба", "Агнешко", "Кайма"],
+    },
+    {
+      name: "Млечни продукти",
+      items: ["Сирене", "Кашкавал", "Кисело мляко", "Яйца"],
+    },
+    {
+      name: "Подправки",
+      items: ["Сол", "Черен пипер", "Магданоз", "Копър", "Мента"],
+    },
+    {
+      name: "Други",
+      items: [
+        "Брашно",
+        "Ориз",
+        "Олио",
+        "Зехтин",
+        "Оцет",
+        "Захар",
+        "Вермишели",
+        "Орехи",
+      ],
+    },
+  ];
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     const formData = new FormData(event.currentTarget);
+
+    // Clear all meal plan related items from localStorage
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith("mealPlan-")) {
+        localStorage.removeItem(key);
+      }
+    });
 
     const planData: MealPlanFormData = {
       days: Number(formData.get("days")),
@@ -57,23 +110,39 @@ export default function PlanPage() {
     }
   };
 
-  const productCategories = [
-    {
-      name: "Зеленчуци",
-      items: ["Гъби", "Патладжан", "Чушки", "Лук", "Чесън"],
-    },
-    {
-      name: "Месо",
-      items: ["Говеждо", "Свинско", "Пилешко", "Риба", "Агнешко"],
-    },
-  ];
-
   const toggleProduct = (product: string) => {
     setExcludedProducts((prev) =>
       prev.includes(product)
         ? prev.filter((p) => p !== product)
         : [...prev, product]
     );
+  };
+
+  const toggleCategory = (categoryName: string) => {
+    const category = productCategories.find((cat) => cat.name === categoryName);
+    if (!category) return;
+
+    const allCategoryProductsSelected = category.items.every((item) =>
+      excludedProducts.includes(item)
+    );
+
+    if (allCategoryProductsSelected) {
+      // If all products are selected, remove them all
+      setExcludedProducts((prev) =>
+        prev.filter((product) => !category.items.includes(product))
+      );
+    } else {
+      // If not all products are selected, add all products from the category
+      setExcludedProducts((prev) => {
+        const newProducts = [...prev];
+        category.items.forEach((item) => {
+          if (!newProducts.includes(item)) {
+            newProducts.push(item);
+          }
+        });
+        return newProducts;
+      });
+    }
   };
 
   return (
@@ -150,30 +219,62 @@ export default function PlanPage() {
               <label className="block text-sm font-medium mb-2">
                 Изключете Продукти
               </label>
-              <div className="space-y-4">
-                {productCategories.map((category) => (
-                  <div key={category.name} className="space-y-2">
-                    <h3 className="font-medium text-[#2E5E4E]">
-                      {category.name}
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {category.items.map((item) => (
+              <button
+                type="button"
+                onClick={() => setShowExclusions((prev) => !prev)}
+                className="w-full mb-2 py-2 px-4 rounded-lg border border-[#E6F4EA] bg-[#F9FAF8] text-[#2E5E4E] font-semibold shadow-sm hover:bg-[#E6F4EA] transition-colors"
+                aria-expanded={showExclusions}
+                aria-controls="exclusion-list"
+              >
+                {showExclusions
+                  ? "Скрий списъка за изключване"
+                  : "Покажи списъка за изключване"}
+              </button>
+              <div
+                id="exclusion-list"
+                className={`transition-all duration-300 ${
+                  showExclusions
+                    ? "max-h-[1000px] opacity-100"
+                    : "max-h-0 opacity-0 overflow-hidden"
+                }`}
+              >
+                <div className="rounded-xl border border-[#E6F4EA] bg-[#F9FAF8] p-4 mt-2 shadow-inner">
+                  <div className="space-y-4">
+                    {productCategories.map((category) => (
+                      <div key={category.name} className="space-y-2">
                         <button
-                          key={item}
                           type="button"
-                          onClick={() => toggleProduct(item)}
-                          className={`px-3 py-1 rounded-full text-sm border transition-colors duration-150 ${
-                            excludedProducts.includes(item)
-                              ? "bg-[#F9E6E6] text-[#B94A48] border-[#B94A48]"
-                              : "bg-gray-100 text-[#2E5E4E] border-[#E6F4EA] hover:bg-[#E6F4EA]"
+                          onClick={() => toggleCategory(category.name)}
+                          className={`w-full text-left font-medium text-[#2E5E4E] hover:text-[#21806A] transition-colors duration-150 ${
+                            category.items.every((item) =>
+                              excludedProducts.includes(item)
+                            )
+                              ? "text-[#B94A48]"
+                              : ""
                           }`}
                         >
-                          {item}
+                          {category.name}
                         </button>
-                      ))}
-                    </div>
+                        <div className="flex flex-wrap gap-2">
+                          {category.items.map((item) => (
+                            <button
+                              key={item}
+                              type="button"
+                              onClick={() => toggleProduct(item)}
+                              className={`px-3 py-1 rounded-full text-sm border transition-colors duration-150 ${
+                                excludedProducts.includes(item)
+                                  ? "bg-[#F9E6E6] text-[#B94A48] border-[#B94A48]"
+                                  : "bg-gray-100 text-[#2E5E4E] border-[#E6F4EA] hover:bg-[#E6F4EA]"
+                              }`}
+                            >
+                              {item}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
