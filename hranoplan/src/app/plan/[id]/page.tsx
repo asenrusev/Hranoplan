@@ -7,6 +7,7 @@ import {
   aggregateShoppingList,
   ShoppingListItem,
 } from "@/utils/recipeUtils";
+import Link from "next/link";
 
 // Softer Bulgarian-inspired colors
 const pastelGreen = "#E6F4EA";
@@ -79,9 +80,12 @@ export default function MealPlanPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-500 mb-4">{error}</h1>
-          <a href="/plan" className="text-emerald-500 hover:text-emerald-600">
+          <Link
+            href="/plan"
+            className="text-emerald-500 hover:text-emerald-600"
+          >
             Върнете се към създаването на план
-          </a>
+          </Link>
         </div>
       </div>
     );
