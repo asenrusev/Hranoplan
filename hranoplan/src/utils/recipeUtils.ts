@@ -1,4 +1,4 @@
-import { supabase, type Database, type Json } from "./supabase";
+import { supabase, type Database } from "./supabase";
 
 export type Recipe = Database["public"]["Tables"]["recipes"]["Row"];
 

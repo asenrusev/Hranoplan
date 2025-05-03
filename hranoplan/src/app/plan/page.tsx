@@ -11,7 +11,22 @@ interface MealPlanFormData {
 }
 
 export default function PlanPage() {
-  const [excludedProducts, setExcludedProducts] = useState<string[]>([]);
+  // Load settings from localStorage if available
+  const savedSettings =
+    typeof window !== "undefined" && localStorage.getItem("mealPlanSettings")
+      ? JSON.parse(localStorage.getItem("mealPlanSettings")!)
+      : null;
+
+  const [days, setDays] = useState<number>(savedSettings?.days || 1);
+  const [servingsPerDay, setServingsPerDay] = useState<number>(
+    savedSettings?.servingsPerDay || 1
+  );
+  const [prepTime, setPrepTime] = useState<string>(
+    savedSettings?.prepTime || "15"
+  );
+  const [excludedProducts, setExcludedProducts] = useState<string[]>(
+    savedSettings?.excludedProducts || []
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [showExclusions, setShowExclusions] = useState<boolean>(false);
   const router = useRouter();
@@ -64,7 +79,6 @@ export default function PlanPage() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    const formData = new FormData(event.currentTarget);
 
     // Clear all meal plan related items from localStorage
     Object.keys(localStorage).forEach((key) => {
@@ -74,11 +88,14 @@ export default function PlanPage() {
     });
 
     const planData: MealPlanFormData = {
-      days: Number(formData.get("days")),
-      servingsPerDay: Number(formData.get("servings")),
-      prepTime: formData.get("prepTime") as string,
-      excludedProducts: excludedProducts,
+      days,
+      servingsPerDay,
+      prepTime,
+      excludedProducts,
     };
+
+    // Save settings for future use
+    localStorage.setItem("mealPlanSettings", JSON.stringify(planData));
 
     try {
       const response = await fetch("/api/mealprep", {
@@ -166,6 +183,8 @@ export default function PlanPage() {
                 name="days"
                 required
                 className="w-full p-2 border rounded-lg bg-white"
+                value={days}
+                onChange={(e) => setDays(Number(e.target.value))}
               >
                 <option value="1">1 ден</option>
                 <option value="2">2 дни</option>
@@ -188,6 +207,8 @@ export default function PlanPage() {
                 name="servings"
                 required
                 className="w-full p-2 border rounded-lg bg-white"
+                value={servingsPerDay}
+                onChange={(e) => setServingsPerDay(Number(e.target.value))}
               >
                 <option value="1">1 порция</option>
                 <option value="2">2 порции</option>
@@ -208,6 +229,8 @@ export default function PlanPage() {
                 name="prepTime"
                 required
                 className="w-full p-2 border rounded-lg bg-white"
+                value={prepTime}
+                onChange={(e) => setPrepTime(e.target.value)}
               >
                 <option value="15">15 минути</option>
                 <option value="30">30 минути</option>
