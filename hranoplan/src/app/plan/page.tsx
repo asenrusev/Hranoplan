@@ -2,12 +2,14 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { getAnonymousUserId } from "@/utils/anonymousUser";
 
 interface MealPlanFormData {
   days: number;
   servingsPerDay: number;
   prepTime: string;
   excludedProducts: string[];
+  anonymousUserId: string;
 }
 
 export default function PlanPage() {
@@ -92,6 +94,7 @@ export default function PlanPage() {
       servingsPerDay,
       prepTime,
       excludedProducts,
+      anonymousUserId: getAnonymousUserId(),
     };
 
     // Save settings for future use
@@ -111,16 +114,9 @@ export default function PlanPage() {
       }
 
       const mealPlan = await response.json();
-      // Generate a unique ID for the plan (using timestamp + random string)
-      const planId = `${Date.now()}-${Math.random()
-        .toString(36)
-        .substring(2, 9)}`;
 
-      // Store the plan in localStorage (since we don't have a database)
-      localStorage.setItem(`mealPlan-${planId}`, JSON.stringify(mealPlan));
-
-      // Navigate to the plan page
-      router.push(`/plan/${planId}`);
+      // Navigate to the plan page using the saved plan ID from the API
+      router.push(`/plan/${mealPlan.data.savedPlanId}`);
     } catch (error) {
       console.error("Error generating meal plan:", error);
       setIsLoading(false);

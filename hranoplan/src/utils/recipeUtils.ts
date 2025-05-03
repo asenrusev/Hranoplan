@@ -103,10 +103,20 @@ export async function generateMealPlan(
   }
 }
 
-export function generateShoppingList(recipes: Recipe[]): ShoppingListItem[] {
+export function generateShoppingList(
+  recipes: Recipe[] | undefined | null
+): ShoppingListItem[] {
+  if (!Array.isArray(recipes)) {
+    console.error("generateShoppingList: recipes is not an array", recipes);
+    return [];
+  }
   const ingredientMap = new Map<string, ShoppingListItem>();
 
   recipes.forEach((recipe) => {
+    if (!Array.isArray(recipe.ingredients)) {
+      console.error("Recipe missing ingredients array:", recipe);
+      return;
+    }
     const ingredients = recipe.ingredients as unknown as Ingredient[];
     ingredients.forEach((ingredient) => {
       const key = `${ingredient.name}-${ingredient.unit}`;

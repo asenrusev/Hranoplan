@@ -17,6 +17,10 @@ const accentGreen = "#2E5E4E";
 const accentRed = "#B94A48";
 
 interface MealPlan {
+  id: string;
+  name: string;
+  start_date: string;
+  end_date: string;
   days: number;
   servingsPerDay: number;
   prepTime: string;
@@ -36,34 +40,31 @@ export default function MealPlanPage() {
   const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
-    const planId = params.id as string;
-    const storedPlan = localStorage.getItem(`mealPlan-${planId}`);
-    console.log("Stored plan:", storedPlan);
-
-    if (storedPlan) {
+    const fetchMealPlan = async () => {
       try {
-        const parsedPlan = JSON.parse(storedPlan);
+        const planId = params.id as string;
+        const response = await fetch(`/api/mealplan/${planId}`);
 
-        // Ensure we're using the correct data structure
-        const mealPlanData = {
-          ...parsedPlan.data.requestParams,
-          meals: parsedPlan.data.mealPlan || [],
-        };
-
-        if (!mealPlanData.meals || mealPlanData.meals.length === 0) {
-          console.error("No meals found in the plan data");
-          setError("Няма намерени ястия в плана");
-        } else {
-          setMealPlan(mealPlanData);
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || "Failed to fetch meal plan");
         }
+
+        const { data } = await response.json();
+        console.log("API data.mealPlan:", data.mealPlan);
+        setMealPlan({
+          ...data.plan,
+          meals: Array.isArray(data.mealPlan) ? data.mealPlan : [],
+        });
       } catch (error) {
-        console.error("Error parsing meal plan:", error);
+        console.error("Error fetching meal plan:", error);
         setError("Грешка при зареждане на плана");
+      } finally {
+        setLoading(false);
       }
-    } else {
-      setError("Планът не е намерен");
-    }
-    setLoading(false);
+    };
+
+    fetchMealPlan();
   }, [params.id]);
 
   if (loading) {
@@ -95,7 +96,9 @@ export default function MealPlanPage() {
   }
 
   // Aggregate shopping list from all meals
-  const shoppingList: ShoppingListItem[] = generateShoppingList(mealPlan.meals);
+  const shoppingList: ShoppingListItem[] = generateShoppingList(
+    Array.isArray(mealPlan.meals) ? mealPlan.meals : []
+  );
 
   // Handlers for toggling
   const toggleDay = (dayIndex: number) => {
