@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     }
 
     // Generate meal plan using our utility function
-    const mealPlan = generateMealPlan(
+    const mealPlan = await generateMealPlan(
       data.days,
       data.servingsPerDay,
       data.prepTime,

@@ -1,147 +1,130 @@
-import recipesData from "../data/recipes.json";
+import { supabase, type Database, type Json } from "./supabase";
+
+export type Recipe = Database["public"]["Tables"]["recipes"]["Row"];
 
 export interface Ingredient {
-  name: string;
-  quantity: number;
-  unit: string; // metric units, e.g., 'g', 'ml', 'pcs'
-}
-
-export interface Recipe {
-  id: string;
-  name: string;
-  prepTime: string;
-  cookTime: string;
-  totalTime: string;
-  servings: number;
-  ingredients: Ingredient[];
-  instructions: string[];
-  nutrition: {
-    calories: number;
-    protein: number;
-    carbs: number;
-    fat: number;
-  };
-  tags: string[];
-}
-
-export interface ShoppingListItem {
   name: string;
   quantity: number;
   unit: string;
 }
 
-export function getRecipes(): Recipe[] {
-  // Ensure instructions are always string[]
-  return recipesData.recipes.map((recipe: unknown) => {
-    const r = recipe as Omit<Recipe, "instructions"> & {
-      instructions: unknown;
-    };
-    return {
-      ...r,
-      instructions: Array.isArray(r.instructions)
-        ? r.instructions.map((inst) =>
-            typeof inst === "string" ? inst : JSON.stringify(inst)
+export interface ShoppingListItem extends Ingredient {
+  recipes: string[];
+}
+
+export async function fetchRecipes(
+  options: {
+    prepTime?: string;
+    excludedProducts?: string[];
+  } = {}
+): Promise<Recipe[]> {
+  try {
+    let query = supabase.from("recipes").select("*");
+
+    // Filter by prep time if specified
+    if (options.prepTime) {
+      const maxPrepTime =
+        options.prepTime === "quick"
+          ? 30
+          : options.prepTime === "medium"
+          ? 60
+          : 120;
+      query = query.lte("prep_time", maxPrepTime);
+    }
+
+    // Execute the query
+    const { data, error } = await query;
+
+    if (error) {
+      console.error("Error fetching recipes:", error);
+      return [];
+    }
+
+    if (!data) {
+      return [];
+    }
+
+    // Filter out recipes with excluded products
+    if (options.excludedProducts && options.excludedProducts.length > 0) {
+      return data.filter((recipe) => {
+        const ingredients = recipe.ingredients as unknown as Ingredient[];
+        return !ingredients.some((ingredient) =>
+          options.excludedProducts!.some((excluded) =>
+            ingredient.name.toLowerCase().includes(excluded.toLowerCase())
           )
-        : [],
-    };
-  });
-}
+        );
+      });
+    }
 
-export function getRecipeById(id: string): Recipe | undefined {
-  return getRecipes().find((recipe) => recipe.id === id);
-}
-
-export function filterRecipesByPrepTime(
-  recipes: Recipe[],
-  maxPrepTime: string
-): Recipe[] {
-  if (maxPrepTime === "any") {
-    return recipes;
+    return data;
+  } catch (error) {
+    console.error("Error in fetchRecipes:", error);
+    return [];
   }
-  const maxTime = parseInt(maxPrepTime);
-  return recipes.filter((recipe) => parseInt(recipe.prepTime) <= maxTime);
 }
 
-export function filterRecipesByServings(servings: number): Recipe[] {
-  return getRecipes().filter((recipe) => recipe.servings >= servings);
-}
-
-export function filterRecipesByTags(tags: string[]): Recipe[] {
-  return getRecipes().filter((recipe) =>
-    tags.some((tag) => recipe.tags.includes(tag))
-  );
-}
-
-export function generateMealPlan(
+export async function generateMealPlan(
   days: number,
   servingsPerDay: number,
   prepTime: string,
   excludedProducts: string[] = []
-): Recipe[] {
-  let availableRecipes = getRecipes();
+): Promise<Recipe[]> {
+  try {
+    // Fetch recipes that match the criteria
+    const recipes = await fetchRecipes({ prepTime, excludedProducts });
 
-  // Filter out recipes with excluded products
-  if (excludedProducts.length > 0) {
-    availableRecipes = availableRecipes.filter((recipe) => {
-      const hasExcludedIngredient = recipe.ingredients.some((ingredient) => {
-        const ingredientName = ingredient.name.toLowerCase();
-        return excludedProducts.some((excluded) => {
-          const excludedName = excluded.toLowerCase();
-          const isExcluded = ingredientName === excludedName;
-          return isExcluded;
-        });
-      });
-      return !hasExcludedIngredient;
-    });
-  }
-
-  // Filter by prep time (using prepTime instead of totalTime)
-  availableRecipes = filterRecipesByPrepTime(availableRecipes, prepTime);
-
-  // If no recipes match the criteria, return all recipes
-  if (availableRecipes.length === 0) {
-    availableRecipes = getRecipes();
-  }
-
-  // Calculate total number of meals needed
-  const totalMealsNeeded = days * servingsPerDay;
-
-  // Randomly select recipes for the meal plan
-  const selectedRecipes: Recipe[] = [];
-
-  // Create a copy of available recipes to avoid modifying the original array
-  let remainingRecipes = [...availableRecipes];
-
-  while (selectedRecipes.length < totalMealsNeeded) {
-    if (remainingRecipes.length === 0) {
-      // If we've used all recipes, start over with the full list
-      remainingRecipes = [...availableRecipes];
+    if (recipes.length === 0) {
+      throw new Error("No recipes found matching the criteria");
     }
 
-    const randomIndex = Math.floor(Math.random() * remainingRecipes.length);
-    const recipe = remainingRecipes[randomIndex];
+    // Randomly select recipes for the meal plan
+    const mealPlan: Recipe[] = [];
+    const totalMealsNeeded = days;
 
-    // Remove the selected recipe from remaining recipes
-    remainingRecipes.splice(randomIndex, 1);
+    while (mealPlan.length < totalMealsNeeded) {
+      const availableRecipes = recipes.filter(
+        (recipe) => !mealPlan.includes(recipe)
+      );
 
-    // Add the recipe to selected recipes
-    selectedRecipes.push(recipe);
-  }
-
-  return selectedRecipes;
-}
-
-export function aggregateShoppingList(recipes: Recipe[]): ShoppingListItem[] {
-  const itemMap = new Map<string, ShoppingListItem>();
-  for (const recipe of recipes) {
-    for (const ingredient of recipe.ingredients) {
-      const key = `${ingredient.name.toLowerCase()}|${ingredient.unit}`;
-      if (itemMap.has(key)) {
-        itemMap.get(key)!.quantity += ingredient.quantity;
+      if (availableRecipes.length === 0) {
+        // All recipes have been used, allow repeats
+        const randomIndex = Math.floor(Math.random() * recipes.length);
+        mealPlan.push(recipes[randomIndex]);
       } else {
-        itemMap.set(key, { ...ingredient });
+        // Pick a random unused recipe
+        const randomIndex = Math.floor(Math.random() * availableRecipes.length);
+        mealPlan.push(availableRecipes[randomIndex]);
       }
     }
+
+    return mealPlan;
+  } catch (error) {
+    console.error("Error generating meal plan:", error);
+    throw error;
   }
-  return Array.from(itemMap.values());
+}
+
+export function generateShoppingList(recipes: Recipe[]): ShoppingListItem[] {
+  const ingredientMap = new Map<string, ShoppingListItem>();
+
+  recipes.forEach((recipe) => {
+    const ingredients = recipe.ingredients as unknown as Ingredient[];
+    ingredients.forEach((ingredient) => {
+      const key = `${ingredient.name}-${ingredient.unit}`;
+      if (ingredientMap.has(key)) {
+        const item = ingredientMap.get(key)!;
+        item.quantity += ingredient.quantity;
+        item.recipes.push(recipe.name);
+      } else {
+        ingredientMap.set(key, {
+          name: ingredient.name,
+          quantity: ingredient.quantity,
+          unit: ingredient.unit,
+          recipes: [recipe.name],
+        });
+      }
+    });
+  });
+
+  return Array.from(ingredientMap.values());
 }

@@ -5,8 +5,10 @@ const nextConfig = {
   reactStrictMode: true,
 };
 
-export default withPWA({
+const config = withPWA({
   dest: "public",
   register: true,
   skipWaiting: true,
 })(nextConfig);
+
+export default config; 

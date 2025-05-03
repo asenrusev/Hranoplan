@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import {
   Recipe,
-  aggregateShoppingList,
+  generateShoppingList,
   ShoppingListItem,
 } from "@/utils/recipeUtils";
 import Link from "next/link";
@@ -30,9 +30,10 @@ export default function MealPlanPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   // Collapsible state
-  const [shoppingOpen, setShoppingOpen] = useState(true);
+  const [shoppingOpen, setShoppingOpen] = useState(false);
   const [openDays, setOpenDays] = useState<{ [day: number]: boolean }>({});
   const [openMeals, setOpenMeals] = useState<{ [key: string]: boolean }>({});
+  const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
     const planId = params.id as string;
@@ -94,9 +95,7 @@ export default function MealPlanPage() {
   }
 
   // Aggregate shopping list from all meals
-  const shoppingList: ShoppingListItem[] = aggregateShoppingList(
-    mealPlan.meals
-  );
+  const shoppingList: ShoppingListItem[] = generateShoppingList(mealPlan.meals);
 
   // Handlers for toggling
   const toggleDay = (dayIndex: number) => {
@@ -105,6 +104,37 @@ export default function MealPlanPage() {
   const toggleMeal = (dayIndex: number, mealIndex: number) => {
     const key = `${dayIndex}-${mealIndex}`;
     setOpenMeals((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  // Function to copy shopping list to clipboard
+  const copyShoppingList = () => {
+    const text = shoppingList
+      .map((item) => `${item.name} - ${item.quantity} ${item.unit}`)
+      .join("\n");
+    navigator.clipboard.writeText(text);
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000);
+  };
+
+  // Function to share shopping list
+  const shareShoppingList = async () => {
+    const text = shoppingList
+      .map((item) => `${item.name} - ${item.quantity} ${item.unit}`)
+      .join("\n");
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Списък за пазаруване",
+          text: text,
+        });
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      copyShoppingList();
+    }
   };
 
   // Set CSS variables for the new palette
@@ -123,14 +153,32 @@ export default function MealPlanPage() {
     >
       {/* Shopping List Section */}
       <div className="mb-8">
-        <button
-          className="w-full text-left text-2xl md:text-3xl font-bold mb-4 focus:outline-none flex items-center justify-between rounded-2xl bg-white border border-[var(--pastelGreen)] hover:bg-[var(--pastelGreen)] transition-colors duration-200 shadow-sm px-4 py-3"
-          style={{ borderColor: pastelGreen, color: accentGreen }}
-          onClick={() => setShoppingOpen((open) => !open)}
-        >
-          <span>Списък за пазаруване</span>
-          <span className="ml-2 text-2xl">{shoppingOpen ? "▲" : "▼"}</span>
-        </button>
+        <div className="flex items-center justify-between mb-4">
+          <button
+            className="text-2xl md:text-3xl font-bold focus:outline-none flex items-center rounded-2xl bg-white border border-[var(--pastelGreen)] hover:bg-[var(--pastelGreen)] transition-colors duration-200 shadow-sm px-4 py-3"
+            style={{ borderColor: pastelGreen, color: accentGreen }}
+            onClick={() => setShoppingOpen((open) => !open)}
+          >
+            <span>Списък за пазаруване</span>
+            <span className="ml-2 text-2xl">{shoppingOpen ? "▲" : "▼"}</span>
+          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={copyShoppingList}
+              className="px-4 py-2 bg-[var(--pastelGreen)] text-[var(--accentGreen)] rounded-lg hover:bg-[var(--pastelGreen)]/80 transition-colors duration-200"
+              style={{ background: pastelGreen, color: accentGreen }}
+            >
+              {copySuccess ? "Копирано!" : "Копирай"}
+            </button>
+            <button
+              onClick={shareShoppingList}
+              className="px-4 py-2 bg-[var(--blushRed)] text-[var(--accentRed)] rounded-lg hover:bg-[var(--blushRed)]/80 transition-colors duration-200"
+              style={{ background: blushRed, color: accentRed }}
+            >
+              Сподели
+            </button>
+          </div>
+        </div>
         <div
           className={`transition-all duration-500 ease-in-out overflow-hidden ${
             shoppingOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
@@ -295,11 +343,26 @@ export default function MealPlanPage() {
                                           Съставки:
                                         </h5>
                                         <ul className="list-disc list-inside text-[#222]">
-                                          {meal.ingredients.map(
-                                            (ingredient, i) => (
-                                              <li key={i}>{ingredient.name}</li>
-                                            )
-                                          )}
+                                          {Array.isArray(meal.ingredients)
+                                            ? meal.ingredients.map(
+                                                (ingredient, i) =>
+                                                  ingredient &&
+                                                  typeof ingredient ===
+                                                    "object" &&
+                                                  !Array.isArray(ingredient) &&
+                                                  "name" in ingredient ? (
+                                                    <li key={i}>
+                                                      {
+                                                        (
+                                                          ingredient as {
+                                                            name: string;
+                                                          }
+                                                        ).name
+                                                      }
+                                                    </li>
+                                                  ) : null
+                                              )
+                                            : null}
                                         </ul>
                                       </div>
                                       <div>
@@ -321,7 +384,7 @@ export default function MealPlanPage() {
                                           Време за приготвяне
                                         </p>
                                         <p className="font-medium">
-                                          {meal.prepTime} мин
+                                          {meal.prep_time ?? "?"} мин
                                         </p>
                                       </div>
                                       <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
@@ -329,7 +392,7 @@ export default function MealPlanPage() {
                                           Време за готвене
                                         </p>
                                         <p className="font-medium">
-                                          {meal.cookTime} мин
+                                          {meal.cook_time ?? "?"} мин
                                         </p>
                                       </div>
                                       <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
@@ -337,7 +400,11 @@ export default function MealPlanPage() {
                                           Общо време
                                         </p>
                                         <p className="font-medium">
-                                          {meal.totalTime} мин
+                                          {meal.prep_time != null &&
+                                          meal.cook_time != null
+                                            ? meal.prep_time + meal.cook_time
+                                            : "?"}{" "}
+                                          мин
                                         </p>
                                       </div>
                                       <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
