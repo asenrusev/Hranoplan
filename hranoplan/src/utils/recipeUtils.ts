@@ -79,22 +79,21 @@ export async function generateMealPlan(
 
     // Randomly select recipes for the meal plan
     const mealPlan: Recipe[] = [];
-    const totalMealsNeeded = days;
+    const totalMealsNeeded = days * servingsPerDay;
 
+    // First, try to use unique recipes
+    const uniqueRecipes = [...recipes];
+
+    while (mealPlan.length < totalMealsNeeded && uniqueRecipes.length > 0) {
+      const randomIndex = Math.floor(Math.random() * uniqueRecipes.length);
+      mealPlan.push(uniqueRecipes[randomIndex]);
+      uniqueRecipes.splice(randomIndex, 1);
+    }
+
+    // If we still need more meals, reuse recipes from the original pool
     while (mealPlan.length < totalMealsNeeded) {
-      const availableRecipes = recipes.filter(
-        (recipe) => !mealPlan.includes(recipe)
-      );
-
-      if (availableRecipes.length === 0) {
-        // All recipes have been used, allow repeats
-        const randomIndex = Math.floor(Math.random() * recipes.length);
-        mealPlan.push(recipes[randomIndex]);
-      } else {
-        // Pick a random unused recipe
-        const randomIndex = Math.floor(Math.random() * availableRecipes.length);
-        mealPlan.push(availableRecipes[randomIndex]);
-      }
+      const randomIndex = Math.floor(Math.random() * recipes.length);
+      mealPlan.push(recipes[randomIndex]);
     }
 
     return mealPlan;
