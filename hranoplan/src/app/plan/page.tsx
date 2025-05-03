@@ -250,8 +250,8 @@ export default function PlanPage() {
                 aria-controls="exclusion-list"
               >
                 {showExclusions
-                  ? "Скрий списъка за изключване"
-                  : "Покажи списъка за изключване"}
+                  ? "Скрий списъка с продукти"
+                  : "Покажи списъка с продукти"}
               </button>
               <div
                 id="exclusion-list"
