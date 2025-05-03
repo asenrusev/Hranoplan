@@ -169,8 +169,7 @@ export default function PlanPage() {
           Създайте Вашия Хранителен План
         </h1>
         <p className="text-lg text-center mb-8 text-gray-700">
-          Кажете ни вашите предпочитания и ще създадем персонализиран хранителен
-          план, който отговаря на вашите нужди
+          Изберете какво обичате да ядете и ще ви направим план за хранене
         </p>
         <form onSubmit={handleSubmit} className="space-y-6 w-full">
           <div className="space-y-4">
