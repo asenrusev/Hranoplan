@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getAnonymousUserId } from "@/utils/anonymousUser";
 
@@ -13,25 +13,24 @@ interface MealPlanFormData {
 }
 
 export default function PlanPage() {
-  // Load settings from localStorage if available
-  const savedSettings =
-    typeof window !== "undefined" && localStorage.getItem("mealPlanSettings")
-      ? JSON.parse(localStorage.getItem("mealPlanSettings")!)
-      : null;
-
-  const [days, setDays] = useState<number>(savedSettings?.days || 1);
-  const [servingsPerDay, setServingsPerDay] = useState<number>(
-    savedSettings?.servingsPerDay || 1
-  );
-  const [prepTime, setPrepTime] = useState<string>(
-    savedSettings?.prepTime || "15"
-  );
-  const [excludedProducts, setExcludedProducts] = useState<string[]>(
-    savedSettings?.excludedProducts || []
-  );
+  const [days, setDays] = useState<number>(1);
+  const [servingsPerDay, setServingsPerDay] = useState<number>(1);
+  const [prepTime, setPrepTime] = useState<string>("15");
+  const [excludedProducts, setExcludedProducts] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showExclusions, setShowExclusions] = useState<boolean>(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const savedSettings = localStorage.getItem("mealPlanSettings");
+    if (savedSettings) {
+      const parsedSettings = JSON.parse(savedSettings);
+      setDays(parsedSettings.days || 1);
+      setServingsPerDay(parsedSettings.servingsPerDay || 1);
+      setPrepTime(parsedSettings.prepTime || "15");
+      setExcludedProducts(parsedSettings.excludedProducts || []);
+    }
+  }, []);
 
   const productCategories = [
     {
