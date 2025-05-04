@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Recipe Name",
+    "description": "A brief description of the recipe",
+    "ingredients": [
+      {
+        "name": "Ingredient Name",
+        "amount": 1,
+        "unit": "piece"
+      }
+    ],
+    "instructions": ["Step 1 of the recipe", "Step 2 of the recipe"],
+    "prep_time": 10,
+    "cook_time": 20,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["tag1", "tag2"]
+  }
+]

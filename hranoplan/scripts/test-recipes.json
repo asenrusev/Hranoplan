@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Simple Pasta",
+    "description": "A quick and easy pasta dish",
+    "ingredients": [
+      {
+        "name": "Pasta",
+        "amount": 200,
+        "unit": "g"
+      },
+      {
+        "name": "Olive Oil",
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      {
+        "name": "Garlic",
+        "amount": 2,
+        "unit": "cloves"
+      }
+    ],
+    "instructions": [
+      "Boil pasta according to package instructions",
+      "Heat olive oil in a pan",
+      "Add minced garlic and cook until fragrant",
+      "Drain pasta and mix with garlic oil"
+    ],
+    "prep_time": 5,
+    "cook_time": 15,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["pasta", "quick", "vegetarian"]
+  },
+  {
+    "name": "Basic Salad",
+    "description": "A fresh and simple salad",
+    "ingredients": [
+      {
+        "name": "Lettuce",
+        "amount": 1,
+        "unit": "head"
+      },
+      {
+        "name": "Tomatoes",
+        "amount": 2,
+        "unit": "pieces"
+      },
+      {
+        "name": "Cucumber",
+        "amount": 1,
+        "unit": "piece"
+      }
+    ],
+    "instructions": [
+      "Wash and chop all vegetables",
+      "Combine in a large bowl",
+      "Add your favorite dressing"
+    ],
+    "prep_time": 10,
+    "cook_time": 0,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["salad", "vegetarian", "healthy"]
+  }
+]
