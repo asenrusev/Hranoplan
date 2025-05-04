@@ -3,11 +3,11 @@ import { supabase } from "@/utils/supabase";
 
 export async function GET(
   request: Request,
-  context: { params: { id: string } }
-) {
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
   try {
-    const params = await Promise.resolve(context.params);
-    const planId = params.id;
+    const { id } = await params;
+    const planId = id;
 
     // Fetch meal plan details
     const { data: planData, error: planError } = await supabase
