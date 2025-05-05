@@ -21,6 +21,7 @@ CREATE TABLE meal_plans (
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     prepTime INTEGER,
+    excludedProducts TEXT[],
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

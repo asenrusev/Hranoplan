@@ -55,6 +55,7 @@ export default function MealPlanPage() {
         setMealPlan({
           ...data.plan,
           prepTime: data.plan.prepTime ?? "",
+          excludedProducts: data.plan.excludedProducts ?? [],
           meals: Array.isArray(data.mealPlan) ? data.mealPlan : [],
         });
       } catch (error) {

@@ -51,6 +51,7 @@ export async function POST(request: Request) {
         days: data.days,
         servingsPerDay: data.servingsPerDay,
         prepTime: data.prepTime,
+        excludedProducts: data.excludedProducts,
       })
       .select()
       .single();
