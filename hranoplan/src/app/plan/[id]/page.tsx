@@ -8,6 +8,10 @@ import {
   ShoppingListItem,
 } from "@/utils/recipeUtils";
 import Link from "next/link";
+import { track } from "@vercel/analytics";
+
+// Helper function to check if we're in development
+const isDevelopment = process.env.NODE_ENV === "development";
 
 // Softer Bulgarian-inspired colors
 const pastelGreen = "#E6F4EA";
@@ -119,6 +123,13 @@ export default function MealPlanPage() {
     navigator.clipboard.writeText(text);
     setCopySuccess(true);
     setTimeout(() => setCopySuccess(false), 2000);
+
+    // Only track in production
+    if (!isDevelopment) {
+      track("click", {
+        element: "copy_shopping_list",
+      });
+    }
   };
 
   // Function to share shopping list
@@ -133,6 +144,12 @@ export default function MealPlanPage() {
           title: "Списък за пазаруване",
           text: text,
         });
+        // Only track in production
+        if (!isDevelopment) {
+          track("click", {
+            element: "share_shopping_list",
+          });
+        }
       } catch (error) {
         console.error("Error sharing:", error);
       }

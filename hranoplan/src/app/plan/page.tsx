@@ -3,6 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getAnonymousUserId } from "@/utils/anonymousUser";
+import { track } from "@vercel/analytics";
+
+// Helper function to check if we're in development
+const isDevelopment = process.env.NODE_ENV === "development";
 
 interface MealPlanFormData {
   days: number;
@@ -113,6 +117,12 @@ export default function PlanPage() {
       }
 
       const mealPlan = await response.json();
+      // Only track in production
+      if (!isDevelopment) {
+        track("click", {
+          element: "generate_meal_plan",
+        });
+      }
 
       // Navigate to the plan page using the saved plan ID from the API
       router.push(`/plan/${mealPlan.data.savedPlanId}`);
