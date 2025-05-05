@@ -1,65 +1,1245 @@
 [
   {
-    "name": "Simple Pasta",
-    "description": "A quick and easy pasta dish",
+    "name": "Шопска салата",
+    "description": "Класическа българска салата",
     "ingredients": [
       {
-        "name": "Pasta",
+        "name": "Домати",
+        "amount": 4,
+        "unit": "бр"
+      },
+      {
+        "name": "Краставици",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Червен лук",
+        "amount": 1,
+        "unit": "бр"
+      },
+      {
+        "name": "Сирене",
         "amount": 200,
-        "unit": "g"
-      },
-      {
-        "name": "Olive Oil",
-        "amount": 2,
-        "unit": "tbsp"
-      },
-      {
-        "name": "Garlic",
-        "amount": 2,
-        "unit": "cloves"
+        "unit": "г"
       }
     ],
     "instructions": [
-      "Boil pasta according to package instructions",
-      "Heat olive oil in a pan",
-      "Add minced garlic and cook until fragrant",
-      "Drain pasta and mix with garlic oil"
+      "Нарежете зеленчуците на кубчета",
+      "Смесете в купа",
+      "Поръснете със сирене"
+    ],
+    "prep_time": 10,
+    "cook_time": 0,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["салата", "вегетарианско", "българско"]
+  },
+  {
+    "name": "Зелена салата с риба тон",
+    "description": "Лека салата с протеини",
+    "ingredients": [
+      {
+        "name": "Маруля",
+        "amount": 1,
+        "unit": "бр"
+      },
+      {
+        "name": "Риба тон",
+        "amount": 2,
+        "unit": "консерви"
+      },
+      {
+        "name": "Царевица",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Масло",
+        "amount": 2,
+        "unit": "с.л"
+      }
+    ],
+    "instructions": [
+      "Нарежете марулята",
+      "Добавете рибата и царевицата",
+      "Полейте с масло"
     ],
     "prep_time": 5,
+    "cook_time": 0,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["салата", "риба", "бързо"]
+  },
+  {
+    "name": "Миш-маш",
+    "description": "Традиционно българско ястие",
+    "ingredients": [
+      {
+        "name": "Чушки",
+        "amount": 4,
+        "unit": "бр"
+      },
+      {
+        "name": "Домати",
+        "amount": 4,
+        "unit": "бр"
+      },
+      {
+        "name": "Яйца",
+        "amount": 4,
+        "unit": "бр"
+      },
+      {
+        "name": "Сирене",
+        "amount": 100,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Нарежете зеленчуците",
+      "Запържете ги",
+      "Добавете яйцата и сиренето"
+    ],
+    "prep_time": 10,
+    "cook_time": 15,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["българско", "вегетарианско", "основно"]
+  },
+  {
+    "name": "Сьомга на тиган",
+    "description": "Бързо и вкусно ястие",
+    "ingredients": [
+      {
+        "name": "Сьомга",
+        "amount": 400,
+        "unit": "г"
+      },
+      {
+        "name": "Лимон",
+        "amount": 1,
+        "unit": "бр"
+      },
+      {
+        "name": "Масло",
+        "amount": 2,
+        "unit": "с.л"
+      }
+    ],
+    "instructions": [
+      "Нарежете рибата",
+      "Запържете на тиган",
+      "Поръснете с лимон"
+    ],
+    "prep_time": 5,
+    "cook_time": 10,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["риба", "бързо", "здравословно"]
+  },
+  {
+    "name": "Зеле с моркови на тиган",
+    "description": "Традиционно българско ястие",
+    "ingredients": [
+      {
+        "name": "Зеле",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Моркови",
+        "amount": 3,
+        "unit": "бр"
+      },
+      {
+        "name": "Лук",
+        "amount": 1,
+        "unit": "бр"
+      },
+      {
+        "name": "Доматен сос",
+        "amount": 250,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Нарежете зеленчуците",
+      "Запържете на тиган",
+      "Добавете подправки"
+    ],
+    "prep_time": 10,
+    "cook_time": 20,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["вегетарианско", "българско", "основно"]
+  },
+  {
+    "name": "Зеленчуци на фурна",
+    "description": "Лесно и вкусно ястие",
+    "ingredients": [
+      {
+        "name": "Чушки",
+        "amount": 3,
+        "unit": "бр"
+      },
+      {
+        "name": "Моркови",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Гъби",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Броколи",
+        "amount": 1,
+        "unit": "бр"
+      }
+    ],
+    "instructions": [
+      "Нарежете зеленчуците",
+      "Подредете в тава",
+      "Печете 30 минути"
+    ],
+    "prep_time": 10,
+    "cook_time": 30,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["вегетарианско", "печено", "здравословно"]
+  },
+  {
+    "name": "Омлет",
+    "description": "Бързо ястие за закуска",
+    "ingredients": [
+      {
+        "name": "Яйца",
+        "amount": 4,
+        "unit": "бр"
+      },
+      {
+        "name": "Мляко",
+        "amount": 100,
+        "unit": "мл"
+      },
+      {
+        "name": "Сирене",
+        "amount": 50,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Разбийте яйцата",
+      "Добавете мляко и сирене",
+      "Изпечете на тиган"
+    ],
+    "prep_time": 5,
+    "cook_time": 10,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["закуска", "бързо", "вегетарианско"]
+  },
+  {
+    "name": "Тиквени филийки с кашкавал",
+    "description": "Традиционно българско ястие",
+    "ingredients": [
+      {
+        "name": "Тиква",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Кашкавал",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Яйца",
+        "amount": 2,
+        "unit": "бр"
+      }
+    ],
+    "instructions": [
+      "Настържете тиквата",
+      "Смесете с яйца",
+      "Добавете кашкавал и изпечете"
+    ],
+    "prep_time": 15,
+    "cook_time": 20,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["българско", "вегетарианско", "основно"]
+  },
+  {
+    "name": "Авокадо тост",
+    "description": "Модерна закуска",
+    "ingredients": [
+      {
+        "name": "Авокадо",
+        "amount": 1,
+        "unit": "бр"
+      },
+      {
+        "name": "Хляб",
+        "amount": 2,
+        "unit": "филии"
+      },
+      {
+        "name": "Яйце",
+        "amount": 1,
+        "unit": "бр"
+      }
+    ],
+    "instructions": ["Изпечете хляба", "Намажете с авокадо", "Добавете яйце"],
+    "prep_time": 5,
+    "cook_time": 10,
+    "servings": 1,
+    "image_url": null,
+    "tags": ["закуска", "бързо", "вегетарианско"]
+  },
+  {
+    "name": "Бъркани яйца",
+    "description": "Класическа закуска",
+    "ingredients": [
+      {
+        "name": "Яйца",
+        "amount": 4,
+        "unit": "бр"
+      },
+      {
+        "name": "Мляко",
+        "amount": 50,
+        "unit": "мл"
+      },
+      {
+        "name": "Сирене",
+        "amount": 50,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Разбийте яйцата",
+      "Добавете мляко",
+      "Бъркайте до готовност"
+    ],
+    "prep_time": 5,
+    "cook_time": 10,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["закуска", "бързо", "вегетарианско"]
+  },
+  {
+    "name": "Баница",
+    "description": "Традиционна българска баница",
+    "ingredients": [
+      {
+        "name": "Кори за баница",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Сирене",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Яйца",
+        "amount": 3,
+        "unit": "бр"
+      },
+      {
+        "name": "Сода бикарбонат",
+        "amount": 25,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Смесете сиренето с яйцата",
+      "Подредете корите",
+      "Печете 40 минути"
+    ],
+    "prep_time": 20,
+    "cook_time": 40,
+    "servings": 8,
+    "image_url": null,
+    "tags": ["българско", "вегетарианско", "основно"]
+  },
+  {
+    "name": "Таратор",
+    "description": "Охлаждаща летна супа",
+    "ingredients": [
+      {
+        "name": "Кисело мляко",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Краставици",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Чесън",
+        "amount": 2,
+        "unit": "ск"
+      }
+    ],
+    "instructions": [
+      "Нарежете краставиците",
+      "Смесете с кисело мляко",
+      "Добавете чесън"
+    ],
+    "prep_time": 10,
+    "cook_time": 0,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["супа", "вегетарианско", "българско"]
+  },
+  {
+    "name": "Леща",
+    "description": "Традиционна българска леща",
+    "ingredients": [
+      {
+        "name": "Леща",
+        "amount": 300,
+        "unit": "г"
+      },
+      {
+        "name": "Лук",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Моркови",
+        "amount": 2,
+        "unit": "бр"
+      }
+    ],
+    "instructions": [
+      "Измийте лещата",
+      "Запържете зеленчуците",
+      "Варете до готовност"
+    ],
+    "prep_time": 10,
+    "cook_time": 30,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["вегетарианско", "българско", "основно"]
+  },
+  {
+    "name": "Супа с месо, моркови и лук",
+    "description": "Традиционна българска супа",
+    "ingredients": [
+      {
+        "name": "Телешко",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Моркови",
+        "amount": 3,
+        "unit": "бр"
+      },
+      {
+        "name": "Лук",
+        "amount": 2,
+        "unit": "бр"
+      }
+    ],
+    "instructions": [
+      "Сложете месото да вари",
+      "Добавете зеленчуците",
+      "Варете 3 часа"
+    ],
+    "prep_time": 15,
+    "cook_time": 180,
+    "servings": 6,
+    "image_url": null,
+    "tags": ["супа", "месо", "българско"]
+  },
+  {
+    "name": "Фасул",
+    "description": "Традиционна българска фасул",
+    "ingredients": [
+      {
+        "name": "Фасул",
+        "amount": 300,
+        "unit": "г"
+      },
+      {
+        "name": "Лук",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Моркови",
+        "amount": 2,
+        "unit": "бр"
+      }
+    ],
+    "instructions": [
+      "Накиснете фасула",
+      "Запържете зеленчуците",
+      "Варете до готовност"
+    ],
+    "prep_time": 480,
+    "cook_time": 60,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["вегетарианско", "българско", "основно"]
+  },
+  {
+    "name": "Пица с оризови парчета и яйца",
+    "description": "Бърза домашна пица",
+    "ingredients": [
+      {
+        "name": "Оризови парчета",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Яйца",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Доматен сок",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Сирене",
+        "amount": 100,
+        "unit": "г"
+      },
+      {
+        "name": "Салам",
+        "amount": 1,
+        "unit": "бр"
+      },
+      {
+        "name": "Кашкавал",
+        "amount": 200,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Смесете съставките",
+      "Изсипете в тава",
+      "Печете 20 минути"
+    ],
+    "prep_time": 10,
+    "cook_time": 20,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["бързо", "вегетарианско", "основно"]
+  },
+  {
+    "name": "Пържоли на тиган",
+    "description": "Бързи пържоли",
+    "ingredients": [
+      {
+        "name": "Телешко",
+        "amount": 400,
+        "unit": "г"
+      },
+      {
+        "name": "Масло",
+        "amount": 2,
+        "unit": "с.л"
+      }
+    ],
+    "instructions": [
+      "Нарежете месото",
+      "Запържете на тиган",
+      "Поръснете с подправки"
+    ],
+    "prep_time": 10,
     "cook_time": 15,
     "servings": 2,
     "image_url": null,
-    "tags": ["pasta", "quick", "vegetarian"]
+    "tags": ["месо", "бързо", "основно"]
   },
   {
-    "name": "Basic Salad",
-    "description": "A fresh and simple salad",
+    "name": "Бон филе на фурна",
+    "description": "Печено свинско",
     "ingredients": [
       {
-        "name": "Lettuce",
-        "amount": 1,
-        "unit": "head"
+        "name": "Бон филе",
+        "amount": 500,
+        "unit": "г"
       },
       {
-        "name": "Tomatoes",
+        "name": "Масло",
         "amount": 2,
-        "unit": "pieces"
+        "unit": "с.л"
       },
       {
-        "name": "Cucumber",
-        "amount": 1,
-        "unit": "piece"
+        "name": "Соев сос",
+        "amount": 10,
+        "unit": "г"
       }
     ],
     "instructions": [
-      "Wash and chop all vegetables",
-      "Combine in a large bowl",
-      "Add your favorite dressing"
+      "Нарежете месото",
+      "Поръснете с подправки",
+      "Печете 40 минути"
+    ],
+    "prep_time": 10,
+    "cook_time": 40,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["месо", "печено", "основно"]
+  },
+  {
+    "name": "Пържоли в гъбен сос",
+    "description": "Месо в гъбен сос",
+    "ingredients": [
+      {
+        "name": "Телешко",
+        "amount": 400,
+        "unit": "г"
+      },
+      {
+        "name": "Гъби",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Сметана",
+        "amount": 200,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Запържете месото",
+      "Добавете гъбите",
+      "Залейте със сметана"
+    ],
+    "prep_time": 10,
+    "cook_time": 20,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["месо", "сос", "основно"]
+  },
+  {
+    "name": "Спагети Болонезе",
+    "description": "Класически спагети",
+    "ingredients": [
+      {
+        "name": "Спагети",
+        "amount": 300,
+        "unit": "г"
+      },
+      {
+        "name": "Кайма",
+        "amount": 300,
+        "unit": "г"
+      },
+      {
+        "name": "Доматен сос",
+        "amount": 400,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Сварете спагетите",
+      "Запържете каймата",
+      "Смесете със сос"
+    ],
+    "prep_time": 10,
+    "cook_time": 20,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["паста", "месо", "основно"]
+  },
+  {
+    "name": "Ориз със зеленчуци",
+    "description": "Леко вегетарианско ястие",
+    "ingredients": [
+      {
+        "name": "Ориз",
+        "amount": 300,
+        "unit": "г"
+      },
+      {
+        "name": "Моркови",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Грах",
+        "amount": 200,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Запържете зеленчуците",
+      "Добавете ориза",
+      "Варете до готовност"
+    ],
+    "prep_time": 10,
+    "cook_time": 20,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["вегетарианско", "основно", "здравословно"]
+  },
+  {
+    "name": "Кюфтета с лютеница",
+    "description": "Традиционни кюфтета",
+    "ingredients": [
+      {
+        "name": "Кайма",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Лютеница",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Яйце",
+        "amount": 1,
+        "unit": "бр"
+      }
+    ],
+    "instructions": [
+      "Смесете каймата с лук",
+      "Добавете лютеница",
+      "Оформете кюфтета"
+    ],
+    "prep_time": 15,
+    "cook_time": 20,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["месо", "българско", "основно"]
+  },
+  {
+    "name": "Карначета",
+    "description": "Традиционни карначета",
+    "ingredients": [
+      {
+        "name": "Карначета",
+        "amount": 500,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Нарежете месото",
+      "Добавете подправки",
+      "Печете 30 минути"
+    ],
+    "prep_time": 15,
+    "cook_time": 30,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["месо", "българско", "основно"]
+  },
+  {
+    "name": "Наденички",
+    "description": "Класически наденички",
+    "ingredients": [
+      {
+        "name": "Наденички",
+        "amount": 400,
+        "unit": "г"
+      },
+      {
+        "name": "Масло",
+        "amount": 2,
+        "unit": "с.л"
+      }
+    ],
+    "instructions": [
+      "Нарежете наденичките",
+      "Запържете с лук",
+      "Добавете подправки"
+    ],
+    "prep_time": 10,
+    "cook_time": 15,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["месо", "бързо", "основно"]
+  },
+  {
+    "name": "Пилешки крилца",
+    "description": "Печени крилца",
+    "ingredients": [
+      {
+        "name": "Пилешки крилца",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Мед",
+        "amount": 2,
+        "unit": "с.л"
+      },
+      {
+        "name": "Соев сос",
+        "amount": 2,
+        "unit": "с.л"
+      }
+    ],
+    "instructions": [
+      "Маринирайте крилцата",
+      "Подредете в тава",
+      "Печете 40 минути"
+    ],
+    "prep_time": 10,
+    "cook_time": 40,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["месо", "печено", "основно"]
+  },
+  {
+    "name": "Крем супа от моркови",
+    "description": "Лека крем супа",
+    "ingredients": [
+      {
+        "name": "Моркови",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Картофи",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Сметана",
+        "amount": 200,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Варете зеленчуците",
+      "Смелете в блендер",
+      "Добавете сметана"
+    ],
+    "prep_time": 10,
+    "cook_time": 30,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["супа", "вегетарианско", "здравословно"]
+  },
+  {
+    "name": "Крем супа от гъби",
+    "description": "Ароматна гъбена супа",
+    "ingredients": [
+      {
+        "name": "Гъби",
+        "amount": 400,
+        "unit": "г"
+      },
+      {
+        "name": "Картофи",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Сметана",
+        "amount": 200,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Запържете гъбите",
+      "Варете с лук",
+      "Смелете и добавете сметана"
+    ],
+    "prep_time": 10,
+    "cook_time": 25,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["супа", "вегетарианско", "здравословно"]
+  },
+  {
+    "name": "Мюсли с прясно мляко и банан",
+    "description": "Лека закуска",
+    "ingredients": [
+      {
+        "name": "Мюсли",
+        "amount": 100,
+        "unit": "г"
+      },
+      {
+        "name": "Прясно мляко",
+        "amount": 200,
+        "unit": "мл"
+      },
+      {
+        "name": "Банани",
+        "amount": 1,
+        "unit": "бр"
+      }
+    ],
+    "instructions": ["Нарежете банана", "Смесете с мюсли", "Добавете мляко"],
+    "prep_time": 5,
+    "cook_time": 0,
+    "servings": 1,
+    "image_url": null,
+    "tags": ["закуска", "вегетарианско", "бързо"]
+  },
+  {
+    "name": "Мюсли с кисело мляко",
+    "description": "Традиционна закуска",
+    "ingredients": [
+      {
+        "name": "Мюсли",
+        "amount": 100,
+        "unit": "г"
+      },
+      {
+        "name": "Кисело мляко",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Мед",
+        "amount": 1,
+        "unit": "с.л"
+      }
+    ],
+    "instructions": [
+      "Смесете мюсли",
+      "Добавете кисело мляко",
+      "Поръснете с мед"
+    ],
+    "prep_time": 5,
+    "cook_time": 0,
+    "servings": 1,
+    "image_url": null,
+    "tags": ["закуска", "вегетарианско", "бързо"]
+  },
+  {
+    "name": "Принцеси с кашкавал и кайма",
+    "description": "Традиционни принцеси",
+    "ingredients": [
+      {
+        "name": "Принцеси",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Кашкавал",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Кайма",
+        "amount": 300,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Напълнете принцесите",
+      "Подредете в тава",
+      "Печете 30 минути"
+    ],
+    "prep_time": 20,
+    "cook_time": 30,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["месо", "българско", "основно"]
+  },
+  {
+    "name": "Палачинки",
+    "description": "Класически палачинки",
+    "ingredients": [
+      {
+        "name": "Брашно",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Яйца",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Мляко",
+        "amount": 400,
+        "unit": "мл"
+      }
+    ],
+    "instructions": [
+      "Смесете съставките",
+      "Изпечете палачинките",
+      "Подайте с мед"
+    ],
+    "prep_time": 10,
+    "cook_time": 20,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["десерт", "вегетарианско", "бързо"]
+  },
+  {
+    "name": "Яйца по панагюрски",
+    "description": "Традиционни яйца",
+    "ingredients": [
+      {
+        "name": "Яйца",
+        "amount": 4,
+        "unit": "бр"
+      },
+      {
+        "name": "Кисело мляко",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Сирене",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Червен пипер",
+        "amount": 2,
+        "unit": "с.л"
+      }
+    ],
+    "instructions": [
+      "Сварете яйцата",
+      "Нарежете на четвъртинки",
+      "Поръснете с чесън и кисело мляко"
+    ],
+    "prep_time": 5,
+    "cook_time": 10,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["закуска", "вегетарианско", "бързо"]
+  },
+  {
+    "name": "Сандвичи",
+    "description": "Бързи сандвичи",
+    "ingredients": [
+      {
+        "name": "Хляб",
+        "amount": 4,
+        "unit": "филии"
+      },
+      {
+        "name": "Салам",
+        "amount": 100,
+        "unit": "г"
+      },
+      {
+        "name": "Сирене",
+        "amount": 100,
+        "unit": "г"
+      },
+      {
+        "name": "Домати",
+        "amount": 1,
+        "unit": "бр"
+      }
+    ],
+    "instructions": [
+      "Нарежете зеленчуците",
+      "Намажете хляба",
+      "Сглобете сандвичите"
     ],
     "prep_time": 10,
     "cook_time": 0,
     "servings": 2,
     "image_url": null,
-    "tags": ["salad", "vegetarian", "healthy"]
+    "tags": ["закуска", "бързо", "вегетарианско"]
+  },
+  {
+    "name": "Рамен",
+    "description": "Бърза супа с юфка",
+    "ingredients": [
+      {
+        "name": "Юфка",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Пилешко",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Яйце",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Моркови",
+        "amount": 1,
+        "unit": "бр"
+      }
+    ],
+    "instructions": ["Варете юфката", "Добавете месото", "Поръснете с яйце"],
+    "prep_time": 10,
+    "cook_time": 15,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["супа", "бързо", "основно"]
+  },
+  {
+    "name": "Кускус",
+    "description": "Леко ястие с кускус",
+    "ingredients": [
+      {
+        "name": "Кускус",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Моркови",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Грах",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Зехтин",
+        "amount": 2,
+        "unit": "с.л"
+      }
+    ],
+    "instructions": [
+      "Варете кускуса",
+      "Запържете зеленчуците",
+      "Смесете и поръснете със зехтин"
+    ],
+    "prep_time": 10,
+    "cook_time": 20,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["вегетарианско", "здравословно", "основно"]
+  },
+  {
+    "name": "Пържени картофи",
+    "description": "Класически пържени картофи",
+    "ingredients": [
+      {
+        "name": "Картофи",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Олио",
+        "amount": 100,
+        "unit": "мл"
+      }
+    ],
+    "instructions": [
+      "Нарежете картофите",
+      "Запържете до златисто",
+      "Поръснете с подправки"
+    ],
+    "prep_time": 10,
+    "cook_time": 20,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["гарнитура", "вегетарианско", "бързо"]
+  },
+  {
+    "name": "Кафяв ориз",
+    "description": "Леко ястие с кафяв ориз",
+    "ingredients": [
+      {
+        "name": "Кафяв ориз",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Моркови",
+        "amount": 2,
+        "unit": "бр"
+      },
+      {
+        "name": "Грах",
+        "amount": 200,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Измийте ориза",
+      "Варете с зеленчуци",
+      "Поръснете с подправки"
+    ],
+    "prep_time": 5,
+    "cook_time": 30,
+    "servings": 2,
+    "image_url": null,
+    "tags": ["вегетарианско", "здравословно", "основно"]
+  },
+  {
+    "name": "Пица салами",
+    "description": "Класическа пица",
+    "ingredients": [
+      {
+        "name": "Тесто за пица",
+        "amount": 300,
+        "unit": "г"
+      },
+      {
+        "name": "Доматен сос",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Салами",
+        "amount": 200,
+        "unit": "г"
+      },
+      {
+        "name": "Кашкавал",
+        "amount": 200,
+        "unit": "г"
+      }
+    ],
+    "instructions": [
+      "Разточете тестото",
+      "Намажете със сос",
+      "Печете 20 минути"
+    ],
+    "prep_time": 15,
+    "cook_time": 20,
+    "servings": 4,
+    "image_url": null,
+    "tags": ["основно", "бързо", "печено"]
+  },
+  {
+    "name": "Лазаня",
+    "description": "Класическа лазаня",
+    "ingredients": [
+      {
+        "name": "Кори за лазаня",
+        "amount": 250,
+        "unit": "г"
+      },
+      {
+        "name": "Кайма",
+        "amount": 400,
+        "unit": "г"
+      },
+      {
+        "name": "Бешамел",
+        "amount": 500,
+        "unit": "г"
+      },
+      {
+        "name": "Кашкавал",
+        "amount": 200,
+        "unit": "г"
+      }
+    ],
+    "instructions": ["Подредете корите", "Добавете сосове", "Печете 40 минути"],
+    "prep_time": 20,
+    "cook_time": 40,
+    "servings": 6,
+    "image_url": null,
+    "tags": ["основно", "печено", "месо"]
   }
 ]
