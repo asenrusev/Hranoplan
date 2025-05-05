@@ -4,7 +4,7 @@ export type Recipe = Database["public"]["Tables"]["recipes"]["Row"];
 
 export interface Ingredient {
   name: string;
-  quantity: number;
+  amount: number;
   unit: string;
 }
 
@@ -22,14 +22,11 @@ export async function fetchRecipes(
     let query = supabase.from("recipes").select("*");
 
     // Filter by prep time if specified
-    if (options.prepTime) {
-      const maxPrepTime =
-        options.prepTime === "quick"
-          ? 30
-          : options.prepTime === "medium"
-          ? 60
-          : 120;
-      query = query.lte("prep_time", maxPrepTime);
+    if (options.prepTime && options.prepTime !== "any") {
+      const maxPrepTime = Number(options.prepTime);
+      if (!isNaN(maxPrepTime)) {
+        query = query.lte("prep_time", maxPrepTime);
+      }
     }
 
     // Execute the query
@@ -122,12 +119,12 @@ export function generateShoppingList(
       const key = `${ingredient.name}-${ingredient.unit}`;
       if (ingredientMap.has(key)) {
         const item = ingredientMap.get(key)!;
-        item.quantity += ingredient.quantity;
+        item.amount += ingredient.amount;
         item.recipes.push(recipe.name);
       } else {
         ingredientMap.set(key, {
           name: ingredient.name,
-          quantity: ingredient.quantity,
+          amount: ingredient.amount,
           unit: ingredient.unit,
           recipes: [recipe.name],
         });

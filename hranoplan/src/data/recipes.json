@@ -8,14 +8,14 @@
       "totalTime": "15",
       "servings": 4,
       "ingredients": [
-        { "name": "домати", "quantity": 4, "unit": "бр" },
-        { "name": "краставици", "quantity": 2, "unit": "бр" },
-        { "name": "лук", "quantity": 1, "unit": "бр" },
-        { "name": "червени пиперки", "quantity": 2, "unit": "бр" },
-        { "name": "сирене", "quantity": 200, "unit": "г" },
-        { "name": "зехтин", "quantity": 60, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "домати", "amount": 4, "unit": "бр" },
+        { "name": "краставици", "amount": 2, "unit": "бр" },
+        { "name": "лук", "amount": 1, "unit": "бр" },
+        { "name": "червени пиперки", "amount": 2, "unit": "бр" },
+        { "name": "сирене", "amount": 200, "unit": "г" },
+        { "name": "зехтин", "amount": 60, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете доматите на кубчета",
@@ -42,13 +42,13 @@
       "totalTime": "10",
       "servings": 4,
       "ingredients": [
-        { "name": "кисело мляко", "quantity": 500, "unit": "г" },
-        { "name": "краставици", "quantity": 3, "unit": "бр" },
-        { "name": "чесън", "quantity": 2, "unit": "ск" },
-        { "name": "зехтин", "quantity": 30, "unit": "мл" },
-        { "name": "орехи", "quantity": 50, "unit": "г" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "копър", "quantity": 10, "unit": "г" }
+        { "name": "кисело мляко", "amount": 500, "unit": "г" },
+        { "name": "краставици", "amount": 3, "unit": "бр" },
+        { "name": "чесън", "amount": 2, "unit": "ск" },
+        { "name": "зехтин", "amount": 30, "unit": "мл" },
+        { "name": "орехи", "amount": 50, "unit": "г" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "копър", "amount": 10, "unit": "г" }
       ],
       "instructions": [
         "Настържете краставиците на ситно",
@@ -74,15 +74,15 @@
       "totalTime": "50",
       "servings": 4,
       "ingredients": [
-        { "name": "кайма", "quantity": 500, "unit": "г" },
-        { "name": "лук", "quantity": 1, "unit": "бр" },
-        { "name": "чесън", "quantity": 2, "unit": "ск" },
-        { "name": "хляб", "quantity": 100, "unit": "г" },
-        { "name": "мляко", "quantity": 100, "unit": "мл" },
-        { "name": "яйце", "quantity": 1, "unit": "бр" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" },
-        { "name": "магданоз", "quantity": 10, "unit": "г" }
+        { "name": "кайма", "amount": 500, "unit": "г" },
+        { "name": "лук", "amount": 1, "unit": "бр" },
+        { "name": "чесън", "amount": 2, "unit": "ск" },
+        { "name": "хляб", "amount": 100, "unit": "г" },
+        { "name": "мляко", "amount": 100, "unit": "мл" },
+        { "name": "яйце", "amount": 1, "unit": "бр" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" },
+        { "name": "магданоз", "amount": 10, "unit": "г" }
       ],
       "instructions": [
         "Накиснете хляба в млякото",
@@ -108,15 +108,15 @@
       "totalTime": "150",
       "servings": 6,
       "ingredients": [
-        { "name": "домати", "quantity": 2000, "unit": "г" },
-        { "name": "червени пиперки", "quantity": 1000, "unit": "г" },
-        { "name": "патладжан", "quantity": 500, "unit": "г" },
-        { "name": "моркови", "quantity": 300, "unit": "г" },
-        { "name": "лук", "quantity": 200, "unit": "г" },
-        { "name": "чесън", "quantity": 50, "unit": "г" },
-        { "name": "зехтин", "quantity": 100, "unit": "мл" },
-        { "name": "сол", "quantity": 2, "unit": "щипка" },
-        { "name": "захар", "quantity": 50, "unit": "г" }
+        { "name": "домати", "amount": 2000, "unit": "г" },
+        { "name": "червени пиперки", "amount": 1000, "unit": "г" },
+        { "name": "патладжан", "amount": 500, "unit": "г" },
+        { "name": "моркови", "amount": 300, "unit": "г" },
+        { "name": "лук", "amount": 200, "unit": "г" },
+        { "name": "чесън", "amount": 50, "unit": "г" },
+        { "name": "зехтин", "amount": 100, "unit": "мл" },
+        { "name": "сол", "amount": 2, "unit": "щипка" },
+        { "name": "захар", "amount": 50, "unit": "г" }
       ],
       "instructions": [
         "Печете пиперките и патладжаните",
@@ -142,12 +142,12 @@
       "totalTime": "75",
       "servings": 8,
       "ingredients": [
-        { "name": "фило кори", "quantity": 500, "unit": "г" },
-        { "name": "сирене", "quantity": 500, "unit": "г" },
-        { "name": "яйца", "quantity": 3, "unit": "бр" },
-        { "name": "кисело мляко", "quantity": 400, "unit": "г" },
-        { "name": "сода за хляб", "quantity": 1, "unit": "щипка" },
-        { "name": "олио", "quantity": 200, "unit": "мл" }
+        { "name": "фило кори", "amount": 500, "unit": "г" },
+        { "name": "сирене", "amount": 500, "unit": "г" },
+        { "name": "яйца", "amount": 3, "unit": "бр" },
+        { "name": "кисело мляко", "amount": 400, "unit": "г" },
+        { "name": "сода за хляб", "amount": 1, "unit": "щипка" },
+        { "name": "олио", "amount": 200, "unit": "мл" }
       ],
       "instructions": [
         "Разтворете сиренето с яйцата и киселото мляко",
@@ -173,15 +173,15 @@
       "totalTime": "100",
       "servings": 6,
       "ingredients": [
-        { "name": "кайма", "quantity": 500, "unit": "г" },
-        { "name": "картофи", "quantity": 1000, "unit": "г" },
-        { "name": "лук", "quantity": 2, "unit": "бр" },
-        { "name": "домати", "quantity": 3, "unit": "бр" },
-        { "name": "чесън", "quantity": 3, "unit": "ск" },
-        { "name": "магданоз", "quantity": 20, "unit": "г" },
-        { "name": "яйца", "quantity": 2, "unit": "бр" },
-        { "name": "кисело мляко", "quantity": 200, "unit": "г" },
-        { "name": "олио", "quantity": 100, "unit": "мл" }
+        { "name": "кайма", "amount": 500, "unit": "г" },
+        { "name": "картофи", "amount": 1000, "unit": "г" },
+        { "name": "лук", "amount": 2, "unit": "бр" },
+        { "name": "домати", "amount": 3, "unit": "бр" },
+        { "name": "чесън", "amount": 3, "unit": "ск" },
+        { "name": "магданоз", "amount": 20, "unit": "г" },
+        { "name": "яйца", "amount": 2, "unit": "бр" },
+        { "name": "кисело мляко", "amount": 200, "unit": "г" },
+        { "name": "олио", "amount": 100, "unit": "мл" }
       ],
       "instructions": [
         "Нарежете картофите на тънки филии",
@@ -207,14 +207,14 @@
       "totalTime": "135",
       "servings": 6,
       "ingredients": [
-        { "name": "зели", "quantity": 1, "unit": "бр" },
-        { "name": "кайма", "quantity": 500, "unit": "г" },
-        { "name": "ориз", "quantity": 200, "unit": "г" },
-        { "name": "лук", "quantity": 2, "unit": "бр" },
-        { "name": "домати", "quantity": 3, "unit": "бр" },
-        { "name": "магданоз", "quantity": 20, "unit": "г" },
-        { "name": "мента", "quantity": 10, "unit": "г" },
-        { "name": "олио", "quantity": 100, "unit": "мл" }
+        { "name": "зели", "amount": 1, "unit": "бр" },
+        { "name": "кайма", "amount": 500, "unit": "г" },
+        { "name": "ориз", "amount": 200, "unit": "г" },
+        { "name": "лук", "amount": 2, "unit": "бр" },
+        { "name": "домати", "amount": 3, "unit": "бр" },
+        { "name": "магданоз", "amount": 20, "unit": "г" },
+        { "name": "мента", "amount": 10, "unit": "г" },
+        { "name": "олио", "amount": 100, "unit": "мл" }
       ],
       "instructions": [
         "Обелете зелето и отделете листата",
@@ -240,14 +240,14 @@
       "totalTime": "140",
       "servings": 6,
       "ingredients": [
-        { "name": "боб", "quantity": 500, "unit": "г" },
-        { "name": "лук", "quantity": 2, "unit": "бр" },
-        { "name": "моркови", "quantity": 2, "unit": "бр" },
-        { "name": "червени пиперки", "quantity": 2, "unit": "бр" },
-        { "name": "домати", "quantity": 3, "unit": "бр" },
-        { "name": "чесън", "quantity": 4, "unit": "ск" },
-        { "name": "магданоз", "quantity": 20, "unit": "г" },
-        { "name": "олио", "quantity": 100, "unit": "мл" }
+        { "name": "боб", "amount": 500, "unit": "г" },
+        { "name": "лук", "amount": 2, "unit": "бр" },
+        { "name": "моркови", "amount": 2, "unit": "бр" },
+        { "name": "червени пиперки", "amount": 2, "unit": "бр" },
+        { "name": "домати", "amount": 3, "unit": "бр" },
+        { "name": "чесън", "amount": 4, "unit": "ск" },
+        { "name": "магданоз", "amount": 20, "unit": "г" },
+        { "name": "олио", "amount": 100, "unit": "мл" }
       ],
       "instructions": [
         "Накиснете боба за една нощ",
@@ -273,13 +273,13 @@
       "totalTime": "90",
       "servings": 4,
       "ingredients": [
-        { "name": "червени пиперки", "quantity": 8, "unit": "бр" },
-        { "name": "кайма", "quantity": 400, "unit": "г" },
-        { "name": "ориз", "quantity": 100, "unit": "г" },
-        { "name": "лук", "quantity": 1, "unit": "бр" },
-        { "name": "домати", "quantity": 2, "unit": "бр" },
-        { "name": "магданоз", "quantity": 15, "unit": "г" },
-        { "name": "олио", "quantity": 100, "unit": "мл" }
+        { "name": "червени пиперки", "amount": 8, "unit": "бр" },
+        { "name": "кайма", "amount": 400, "unit": "г" },
+        { "name": "ориз", "amount": 100, "unit": "г" },
+        { "name": "лук", "amount": 1, "unit": "бр" },
+        { "name": "домати", "amount": 2, "unit": "бр" },
+        { "name": "магданоз", "amount": 15, "unit": "г" },
+        { "name": "олио", "amount": 100, "unit": "мл" }
       ],
       "instructions": [
         "Изварете ориза",
@@ -305,13 +305,13 @@
       "totalTime": "110",
       "servings": 6,
       "ingredients": [
-        { "name": "пилешко", "quantity": 1, "unit": "бр" },
-        { "name": "моркови", "quantity": 3, "unit": "бр" },
-        { "name": "лук", "quantity": 2, "unit": "бр" },
-        { "name": "целина", "quantity": 1, "unit": "бр" },
-        { "name": "магданоз", "quantity": 20, "unit": "г" },
-        { "name": "вермишели", "quantity": 100, "unit": "г" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" }
+        { "name": "пилешко", "amount": 1, "unit": "бр" },
+        { "name": "моркови", "amount": 3, "unit": "бр" },
+        { "name": "лук", "amount": 2, "unit": "бр" },
+        { "name": "целина", "amount": 1, "unit": "бр" },
+        { "name": "магданоз", "amount": 20, "unit": "г" },
+        { "name": "вермишели", "amount": 100, "unit": "г" },
+        { "name": "сол", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Поставете пилето в тенджера с вода",
@@ -337,10 +337,10 @@
       "totalTime": "45",
       "servings": 4,
       "ingredients": [
-        { "name": "картофи", "quantity": 1000, "unit": "г" },
-        { "name": "олио", "quantity": 200, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "картофи", "amount": 1000, "unit": "г" },
+        { "name": "олио", "amount": 200, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете картофите на дребни кубчета",
@@ -365,11 +365,11 @@
       "totalTime": "35",
       "servings": 4,
       "ingredients": [
-        { "name": "тиквички", "quantity": 4, "unit": "бр" },
-        { "name": "брашно", "quantity": 100, "unit": "г" },
-        { "name": "яйца", "quantity": 2, "unit": "бр" },
-        { "name": "олио", "quantity": 200, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" }
+        { "name": "тиквички", "amount": 4, "unit": "бр" },
+        { "name": "брашно", "amount": 100, "unit": "г" },
+        { "name": "яйца", "amount": 2, "unit": "бр" },
+        { "name": "олио", "amount": 200, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете тиквичките на тънки филии",
@@ -394,13 +394,13 @@
       "totalTime": "80",
       "servings": 4,
       "ingredients": [
-        { "name": "пилешко", "quantity": 800, "unit": "г" },
-        { "name": "ориз", "quantity": 300, "unit": "г" },
-        { "name": "лук", "quantity": 2, "unit": "бр" },
-        { "name": "моркови", "quantity": 2, "unit": "бр" },
-        { "name": "домати", "quantity": 2, "unit": "бр" },
-        { "name": "олио", "quantity": 100, "unit": "мл" },
-        { "name": "магданоз", "quantity": 15, "unit": "г" }
+        { "name": "пилешко", "amount": 800, "unit": "г" },
+        { "name": "ориз", "amount": 300, "unit": "г" },
+        { "name": "лук", "amount": 2, "unit": "бр" },
+        { "name": "моркови", "amount": 2, "unit": "бр" },
+        { "name": "домати", "amount": 2, "unit": "бр" },
+        { "name": "олио", "amount": 100, "unit": "мл" },
+        { "name": "магданоз", "amount": 15, "unit": "г" }
       ],
       "instructions": [
         "Нарежете пилето на парчета",
@@ -426,13 +426,13 @@
       "totalTime": "120",
       "servings": 6,
       "ingredients": [
-        { "name": "кисело зеле", "quantity": 1000, "unit": "г" },
-        { "name": "кайма", "quantity": 400, "unit": "г" },
-        { "name": "ориз", "quantity": 100, "unit": "г" },
-        { "name": "лук", "quantity": 2, "unit": "бр" },
-        { "name": "домати", "quantity": 3, "unit": "бр" },
-        { "name": "олио", "quantity": 100, "unit": "мл" },
-        { "name": "магданоз", "quantity": 15, "unit": "г" }
+        { "name": "кисело зеле", "amount": 1000, "unit": "г" },
+        { "name": "кайма", "amount": 400, "unit": "г" },
+        { "name": "ориз", "amount": 100, "unit": "г" },
+        { "name": "лук", "amount": 2, "unit": "бр" },
+        { "name": "домати", "amount": 3, "unit": "бр" },
+        { "name": "олио", "amount": 100, "unit": "мл" },
+        { "name": "магданоз", "amount": 15, "unit": "г" }
       ],
       "instructions": [
         "Изварете ориза",
@@ -458,12 +458,12 @@
       "totalTime": "50",
       "servings": 4,
       "ingredients": [
-        { "name": "картофи", "quantity": 800, "unit": "г" },
-        { "name": "яйца", "quantity": 4, "unit": "бр" },
-        { "name": "краставици", "quantity": 2, "unit": "бр" },
-        { "name": "лук", "quantity": 1, "unit": "бр" },
-        { "name": "майонеза", "quantity": 200, "unit": "г" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" }
+        { "name": "картофи", "amount": 800, "unit": "г" },
+        { "name": "яйца", "amount": 4, "unit": "бр" },
+        { "name": "краставици", "amount": 2, "unit": "бр" },
+        { "name": "лук", "amount": 1, "unit": "бр" },
+        { "name": "майонеза", "amount": 200, "unit": "г" },
+        { "name": "сол", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Изварете картофите и яйцата",
@@ -489,10 +489,10 @@
       "totalTime": "15",
       "servings": 2,
       "ingredients": [
-        { "name": "яйца", "quantity": 4, "unit": "бр" },
-        { "name": "луканка", "quantity": 200, "unit": "г" },
-        { "name": "олио", "quantity": 30, "unit": "мл" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "яйца", "amount": 4, "unit": "бр" },
+        { "name": "луканка", "amount": 200, "unit": "г" },
+        { "name": "олио", "amount": 30, "unit": "мл" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете луканката на тънки филии",
@@ -517,13 +517,13 @@
       "totalTime": "35",
       "servings": 4,
       "ingredients": [
-        { "name": "пилешки гърди", "quantity": 600, "unit": "г" },
-        { "name": "брашно", "quantity": 100, "unit": "г" },
-        { "name": "яйца", "quantity": 2, "unit": "бр" },
-        { "name": "галета", "quantity": 100, "unit": "г" },
-        { "name": "олио", "quantity": 200, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "пилешки гърди", "amount": 600, "unit": "г" },
+        { "name": "брашно", "amount": 100, "unit": "г" },
+        { "name": "яйца", "amount": 2, "unit": "бр" },
+        { "name": "галета", "amount": 100, "unit": "г" },
+        { "name": "олио", "amount": 200, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете гърдите на тънки филии",
@@ -549,13 +549,13 @@
       "totalTime": "10",
       "servings": 4,
       "ingredients": [
-        { "name": "зелени салати", "quantity": 200, "unit": "г" },
-        { "name": "домати", "quantity": 2, "unit": "бр" },
-        { "name": "краставици", "quantity": 2, "unit": "бр" },
-        { "name": "лук", "quantity": 1, "unit": "бр" },
-        { "name": "зехтин", "quantity": 60, "unit": "мл" },
-        { "name": "оцет", "quantity": 30, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" }
+        { "name": "зелени салати", "amount": 200, "unit": "г" },
+        { "name": "домати", "amount": 2, "unit": "бр" },
+        { "name": "краставици", "amount": 2, "unit": "бр" },
+        { "name": "лук", "amount": 1, "unit": "бр" },
+        { "name": "зехтин", "amount": 60, "unit": "мл" },
+        { "name": "оцет", "amount": 30, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете зеленчуците",
@@ -580,11 +580,11 @@
       "totalTime": "35",
       "servings": 4,
       "ingredients": [
-        { "name": "патладжан", "quantity": 2, "unit": "бр" },
-        { "name": "брашно", "quantity": 100, "unit": "г" },
-        { "name": "яйца", "quantity": 2, "unit": "бр" },
-        { "name": "олио", "quantity": 200, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" }
+        { "name": "патладжан", "amount": 2, "unit": "бр" },
+        { "name": "брашно", "amount": 100, "unit": "г" },
+        { "name": "яйца", "amount": 2, "unit": "бр" },
+        { "name": "олио", "amount": 200, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете патладжаните на тънки филии",
@@ -609,12 +609,12 @@
       "totalTime": "80",
       "servings": 4,
       "ingredients": [
-        { "name": "пилешко", "quantity": 800, "unit": "г" },
-        { "name": "картофи", "quantity": 1000, "unit": "г" },
-        { "name": "лук", "quantity": 2, "unit": "бр" },
-        { "name": "моркови", "quantity": 2, "unit": "бр" },
-        { "name": "олио", "quantity": 100, "unit": "мл" },
-        { "name": "магданоз", "quantity": 15, "unit": "г" }
+        { "name": "пилешко", "amount": 800, "unit": "г" },
+        { "name": "картофи", "amount": 1000, "unit": "г" },
+        { "name": "лук", "amount": 2, "unit": "бр" },
+        { "name": "моркови", "amount": 2, "unit": "бр" },
+        { "name": "олио", "amount": 100, "unit": "мл" },
+        { "name": "магданоз", "amount": 15, "unit": "г" }
       ],
       "instructions": [
         "Нарежете пилето на парчета",
@@ -640,11 +640,11 @@
       "totalTime": "30",
       "servings": 4,
       "ingredients": [
-        { "name": "сирене", "quantity": 400, "unit": "г" },
-        { "name": "яйца", "quantity": 4, "unit": "бр" },
-        { "name": "кисело мляко", "quantity": 200, "unit": "г" },
-        { "name": "брашно", "quantity": 50, "unit": "г" },
-        { "name": "олио", "quantity": 100, "unit": "мл" }
+        { "name": "сирене", "amount": 400, "unit": "г" },
+        { "name": "яйца", "amount": 4, "unit": "бр" },
+        { "name": "кисело мляко", "amount": 200, "unit": "г" },
+        { "name": "брашно", "amount": 50, "unit": "г" },
+        { "name": "олио", "amount": 100, "unit": "мл" }
       ],
       "instructions": [
         "Нарежете сиренето на кубчета",
@@ -669,11 +669,11 @@
       "totalTime": "35",
       "servings": 4,
       "ingredients": [
-        { "name": "риба", "quantity": 800, "unit": "г" },
-        { "name": "брашно", "quantity": 100, "unit": "г" },
-        { "name": "олио", "quantity": 200, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "риба", "amount": 800, "unit": "г" },
+        { "name": "брашно", "amount": 100, "unit": "г" },
+        { "name": "олио", "amount": 200, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Почистете рибата",
@@ -698,12 +698,12 @@
       "totalTime": "40",
       "servings": 4,
       "ingredients": [
-        { "name": "картофи", "quantity": 800, "unit": "г" },
-        { "name": "яйца", "quantity": 4, "unit": "бр" },
-        { "name": "лук", "quantity": 1, "unit": "бр" },
-        { "name": "олио", "quantity": 100, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "картофи", "amount": 800, "unit": "г" },
+        { "name": "яйца", "amount": 4, "unit": "бр" },
+        { "name": "лук", "amount": 1, "unit": "бр" },
+        { "name": "олио", "amount": 100, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете картофите на кубчета",
@@ -729,11 +729,11 @@
       "totalTime": "35",
       "servings": 4,
       "ingredients": [
-        { "name": "тиквички", "quantity": 4, "unit": "бр" },
-        { "name": "чесън", "quantity": 4, "unit": "ск" },
-        { "name": "олио", "quantity": 100, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "магданоз", "quantity": 10, "unit": "г" }
+        { "name": "тиквички", "amount": 4, "unit": "бр" },
+        { "name": "чесън", "amount": 4, "unit": "ск" },
+        { "name": "олио", "amount": 100, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "магданоз", "amount": 10, "unit": "г" }
       ],
       "instructions": [
         "Нарежете тиквичките на тънки филии",
@@ -758,10 +758,10 @@
       "totalTime": "15",
       "servings": 2,
       "ingredients": [
-        { "name": "яйца", "quantity": 4, "unit": "бр" },
-        { "name": "сирене", "quantity": 200, "unit": "г" },
-        { "name": "олио", "quantity": 30, "unit": "мл" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "яйца", "amount": 4, "unit": "бр" },
+        { "name": "сирене", "amount": 200, "unit": "г" },
+        { "name": "олио", "amount": 30, "unit": "мл" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Настържете сиренето",
@@ -786,15 +786,15 @@
       "totalTime": "45",
       "servings": 4,
       "ingredients": [
-        { "name": "картофи", "quantity": 1000, "unit": "г" },
-        { "name": "лук", "quantity": 2, "unit": "бр" },
-        { "name": "олио", "quantity": 100, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "картофи", "amount": 1000, "unit": "г" },
+        { "name": "лук", "amount": 2, "unit": "бр" },
+        { "name": "олио", "amount": 100, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете картофите на кубчета",
-        { "name": "лук", "quantity": 1, "unit": "бр" },
+        { "name": "лук", "amount": 1, "unit": "бр" },
         "Изпържете картофите",
         "Добавете лука",
         "Овкусете със сол и черен пипер"
@@ -815,11 +815,11 @@
       "totalTime": "25",
       "servings": 2,
       "ingredients": [
-        { "name": "яйца", "quantity": 4, "unit": "бр" },
-        { "name": "луканка", "quantity": 100, "unit": "г" },
-        { "name": "сирене", "quantity": 100, "unit": "г" },
-        { "name": "олио", "quantity": 30, "unit": "мл" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "яйца", "amount": 4, "unit": "бр" },
+        { "name": "луканка", "amount": 100, "unit": "г" },
+        { "name": "сирене", "amount": 100, "unit": "г" },
+        { "name": "олио", "amount": 30, "unit": "мл" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете луканката на кубчета",
@@ -844,12 +844,12 @@
       "totalTime": "45",
       "servings": 4,
       "ingredients": [
-        { "name": "картофи", "quantity": 800, "unit": "г" },
-        { "name": "яйца", "quantity": 4, "unit": "бр" },
-        { "name": "сирене", "quantity": 200, "unit": "г" },
-        { "name": "олио", "quantity": 100, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "картофи", "amount": 800, "unit": "г" },
+        { "name": "яйца", "amount": 4, "unit": "бр" },
+        { "name": "сирене", "amount": 200, "unit": "г" },
+        { "name": "олио", "amount": 100, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете картофите на кубчета",
@@ -874,11 +874,11 @@
       "totalTime": "25",
       "servings": 2,
       "ingredients": [
-        { "name": "яйца", "quantity": 4, "unit": "бр" },
-        { "name": "лук", "quantity": 1, "unit": "бр" },
-        { "name": "олио", "quantity": 30, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "яйца", "amount": 4, "unit": "бр" },
+        { "name": "лук", "amount": 1, "unit": "бр" },
+        { "name": "олио", "amount": 30, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете лука на ситно",
@@ -903,12 +903,12 @@
       "totalTime": "45",
       "servings": 4,
       "ingredients": [
-        { "name": "картофи", "quantity": 800, "unit": "г" },
-        { "name": "лук", "quantity": 2, "unit": "бр" },
-        { "name": "яйца", "quantity": 4, "unit": "бр" },
-        { "name": "олио", "quantity": 100, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "картофи", "amount": 800, "unit": "г" },
+        { "name": "лук", "amount": 2, "unit": "бр" },
+        { "name": "яйца", "amount": 4, "unit": "бр" },
+        { "name": "олио", "amount": 100, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете картофите на кубчета",
@@ -934,12 +934,12 @@
       "totalTime": "25",
       "servings": 2,
       "ingredients": [
-        { "name": "яйца", "quantity": 4, "unit": "бр" },
-        { "name": "лук", "quantity": 1, "unit": "бр" },
-        { "name": "сирене", "quantity": 100, "unit": "г" },
-        { "name": "олио", "quantity": 30, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "яйца", "amount": 4, "unit": "бр" },
+        { "name": "лук", "amount": 1, "unit": "бр" },
+        { "name": "сирене", "amount": 100, "unit": "г" },
+        { "name": "олио", "amount": 30, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете лука на ситно",
@@ -964,12 +964,12 @@
       "totalTime": "45",
       "servings": 4,
       "ingredients": [
-        { "name": "картофи", "quantity": 800, "unit": "г" },
-        { "name": "лук", "quantity": 2, "unit": "бр" },
-        { "name": "сирене", "quantity": 200, "unit": "г" },
-        { "name": "олио", "quantity": 100, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "картофи", "amount": 800, "unit": "г" },
+        { "name": "лук", "amount": 2, "unit": "бр" },
+        { "name": "сирене", "amount": 200, "unit": "г" },
+        { "name": "олио", "amount": 100, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете картофите на кубчета",
@@ -995,12 +995,12 @@
       "totalTime": "25",
       "servings": 2,
       "ingredients": [
-        { "name": "яйца", "quantity": 4, "unit": "бр" },
-        { "name": "лук", "quantity": 1, "unit": "бр" },
-        { "name": "луканка", "quantity": 100, "unit": "г" },
-        { "name": "олио", "quantity": 30, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "яйца", "amount": 4, "unit": "бр" },
+        { "name": "лук", "amount": 1, "unit": "бр" },
+        { "name": "луканка", "amount": 100, "unit": "г" },
+        { "name": "олио", "amount": 30, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете лука на ситно",
@@ -1025,12 +1025,12 @@
       "totalTime": "45",
       "servings": 4,
       "ingredients": [
-        { "name": "картофи", "quantity": 800, "unit": "г" },
-        { "name": "лук", "quantity": 2, "unit": "бр" },
-        { "name": "луканка", "quantity": 200, "unit": "г" },
-        { "name": "олио", "quantity": 100, "unit": "мл" },
-        { "name": "сол", "quantity": 1, "unit": "щипка" },
-        { "name": "черен пипер", "quantity": 1, "unit": "щипка" }
+        { "name": "картофи", "amount": 800, "unit": "г" },
+        { "name": "лук", "amount": 2, "unit": "бр" },
+        { "name": "луканка", "amount": 200, "unit": "г" },
+        { "name": "олио", "amount": 100, "unit": "мл" },
+        { "name": "сол", "amount": 1, "unit": "щипка" },
+        { "name": "черен пипер", "amount": 1, "unit": "щипка" }
       ],
       "instructions": [
         "Нарежете картофите на кубчета",

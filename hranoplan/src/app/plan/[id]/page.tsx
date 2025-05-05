@@ -54,6 +54,7 @@ export default function MealPlanPage() {
         console.log("API data.mealPlan:", data.mealPlan);
         setMealPlan({
           ...data.plan,
+          prepTime: data.plan.prepTime ?? "",
           meals: Array.isArray(data.mealPlan) ? data.mealPlan : [],
         });
       } catch (error) {
@@ -112,7 +113,7 @@ export default function MealPlanPage() {
   // Function to copy shopping list to clipboard
   const copyShoppingList = () => {
     const text = shoppingList
-      .map((item) => `${item.name} - ${item.quantity} ${item.unit}`)
+      .map((item) => `${item.name} - ${item.amount} ${item.unit}`)
       .join("\n");
     navigator.clipboard.writeText(text);
     setCopySuccess(true);
@@ -122,7 +123,7 @@ export default function MealPlanPage() {
   // Function to share shopping list
   const shareShoppingList = async () => {
     const text = shoppingList
-      .map((item) => `${item.name} - ${item.quantity} ${item.unit}`)
+      .map((item) => `${item.name} - ${item.amount} ${item.unit}`)
       .join("\n");
 
     if (navigator.share) {
@@ -201,7 +202,7 @@ export default function MealPlanPage() {
                     {item.name}
                   </span>
                   <span className="text-gray-700">
-                    {item.quantity} {item.unit}
+                    {item.amount} {item.unit}
                   </span>
                 </li>
               ))}
@@ -234,7 +235,7 @@ export default function MealPlanPage() {
                 </p>
                 <p className="text-[#222]">
                   Време за приготвяне:{" "}
-                  {mealPlan.prepTime === "any"
+                  {mealPlan.prepTime === "any" || !mealPlan.prepTime
                     ? "Няма значение"
                     : `${mealPlan.prepTime} минути`}
                 </p>

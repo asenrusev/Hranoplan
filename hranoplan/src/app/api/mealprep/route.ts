@@ -50,6 +50,7 @@ export async function POST(request: Request) {
         user_id: data.anonymousUserId,
         days: data.days,
         servingsPerDay: data.servingsPerDay,
+        prepTime: data.prepTime,
       })
       .select()
       .single();
