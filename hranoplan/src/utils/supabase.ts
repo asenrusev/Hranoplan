@@ -35,6 +35,10 @@ export interface Database {
           servings: number | null;
           image_url: string | null;
           tags: string[] | null;
+          is_breakfast: boolean;
+          is_lunch: boolean;
+          is_dinner: boolean;
+          is_supplementary: boolean;
           created_at: string;
           updated_at: string;
         };
@@ -49,6 +53,10 @@ export interface Database {
           servings?: number | null;
           image_url?: string | null;
           tags?: string[] | null;
+          is_breakfast?: boolean;
+          is_lunch?: boolean;
+          is_dinner?: boolean;
+          is_supplementary?: boolean;
           created_at?: string;
           updated_at?: string;
         };
@@ -63,6 +71,10 @@ export interface Database {
           servings?: number | null;
           image_url?: string | null;
           tags?: string[] | null;
+          is_breakfast?: boolean;
+          is_lunch?: boolean;
+          is_dinner?: boolean;
+          is_supplementary?: boolean;
           created_at?: string;
           updated_at?: string;
         };

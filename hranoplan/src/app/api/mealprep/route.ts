@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { generateMealPlan } from "@/utils/recipeUtils";
+import { generateMealPlan, MealPlanSlot } from "@/utils/recipeUtils";
 import { supabase } from "@/utils/supabase";
 
 interface MealPlanRequestData {
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     }
 
     // Generate meal plan using our utility function
-    const mealPlan = await generateMealPlan(
+    const mealPlan: MealPlanSlot[] = await generateMealPlan(
       data.days,
       data.servingsPerDay,
       data.prepTime,
@@ -62,11 +62,11 @@ export async function POST(request: Request) {
     }
 
     // Save meal plan recipes
-    const mealPlanRecipes = mealPlan.map((recipe, index) => ({
+    const mealPlanRecipes = mealPlan.map((slot, index) => ({
       meal_plan_id: savedMealPlan.id,
-      recipe_id: recipe.id,
+      recipe_id: slot.recipe.id,
       day_of_week: Math.floor(index / data.servingsPerDay),
-      meal_type: "main", // TODO: Add support for different meal types
+      meal_type: slot.slotType,
     }));
 
     const { error: recipesError } = await supabase

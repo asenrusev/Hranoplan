@@ -43,7 +43,7 @@ export async function fetchRecipes(
 
     // Filter out recipes with excluded products
     if (options.excludedProducts && options.excludedProducts.length > 0) {
-      return data.filter((recipe) => {
+      const filtered = data.filter((recipe) => {
         const ingredients = recipe.ingredients as unknown as Ingredient[];
         return !ingredients.some((ingredient) =>
           options.excludedProducts!.some((excluded) =>
@@ -51,8 +51,17 @@ export async function fetchRecipes(
           )
         );
       });
+      console.log(
+        "fetchRecipes: filtered recipes after excludedProducts",
+        filtered.map((r) => r.name)
+      );
+      return filtered;
     }
 
+    console.log(
+      "fetchRecipes: returning recipes",
+      data.map((r) => r.name)
+    );
     return data;
   } catch (error) {
     console.error("Error in fetchRecipes:", error);
@@ -60,39 +69,115 @@ export async function fetchRecipes(
   }
 }
 
+type MealType = "breakfast" | "lunch" | "dinner";
+
+function getOrderedMealSlots(servingsPerDay: number): MealType[] {
+  const baseOrder: MealType[] = ["breakfast", "lunch", "dinner"];
+  const slots: MealType[] = [];
+  for (let i = 0; i < servingsPerDay; i++) {
+    slots.push(baseOrder[i % baseOrder.length]);
+  }
+  return slots;
+}
+
+function getMealTypeField(type: MealType): keyof Recipe {
+  switch (type) {
+    case "breakfast":
+      return "is_breakfast";
+    case "lunch":
+      return "is_lunch";
+    case "dinner":
+      return "is_dinner";
+  }
+}
+
+export type MealSlotType = "breakfast" | "lunch" | "dinner";
+
+export interface MealPlanSlot {
+  recipe: Recipe;
+  slotType: MealSlotType;
+}
+
 export async function generateMealPlan(
   days: number,
   servingsPerDay: number,
   prepTime: string,
   excludedProducts: string[] = []
-): Promise<Recipe[]> {
+): Promise<MealPlanSlot[]> {
   try {
-    // Fetch recipes that match the criteria
+    // Fetch all recipes that match the criteria
     const recipes = await fetchRecipes({ prepTime, excludedProducts });
+    console.log(
+      "generateMealPlan: all recipes",
+      recipes.map((r) => ({
+        name: r.name,
+        is_breakfast: r.is_breakfast,
+        is_lunch: r.is_lunch,
+        is_dinner: r.is_dinner,
+      }))
+    );
 
     if (recipes.length === 0) {
       throw new Error("No recipes found matching the criteria");
     }
 
-    // Randomly select recipes for the meal plan
-    const mealPlan: Recipe[] = [];
-    const totalMealsNeeded = days * servingsPerDay;
+    const mealPlan: MealPlanSlot[] = [];
+    const mealSlotsPerDay = getOrderedMealSlots(servingsPerDay);
 
-    // First, try to use unique recipes
-    const uniqueRecipes = [...recipes];
-
-    while (mealPlan.length < totalMealsNeeded && uniqueRecipes.length > 0) {
-      const randomIndex = Math.floor(Math.random() * uniqueRecipes.length);
-      mealPlan.push(uniqueRecipes[randomIndex]);
-      uniqueRecipes.splice(randomIndex, 1);
+    for (let day = 0; day < days; day++) {
+      for (const slotType of mealSlotsPerDay) {
+        const mealTypeField = getMealTypeField(slotType);
+        // Get available recipes for this meal type (main or supplementary)
+        const availableRecipes = recipes.filter(
+          (recipe) => recipe[mealTypeField]
+        );
+        console.log(
+          `Day ${day + 1}, Slot ${slotType}: available recipes:`,
+          availableRecipes.map((r) => r.name)
+        );
+        if (availableRecipes.length === 0) {
+          throw new Error(`No recipes found for meal type: ${slotType}`);
+        }
+        // Try to find a recipe that hasn't been used in the last 2 days
+        const recentMealPlan = mealPlan.slice(-servingsPerDay * 2);
+        const unusedRecipes = availableRecipes.filter(
+          (recipe) => !recentMealPlan.some((r) => r.recipe.id === recipe.id)
+        );
+        // Select a main meal (prefer non-supplementary)
+        const mainCandidates = (
+          unusedRecipes.length > 0 ? unusedRecipes : availableRecipes
+        ).filter((r) => !r.is_supplementary);
+        let selectedRecipe: Recipe;
+        if (mainCandidates.length > 0) {
+          selectedRecipe =
+            mainCandidates[Math.floor(Math.random() * mainCandidates.length)];
+        } else {
+          // If no main, fallback to any available (including supplementary)
+          selectedRecipe = (
+            unusedRecipes.length > 0 ? unusedRecipes : availableRecipes
+          )[0];
+        }
+        mealPlan.push({ recipe: selectedRecipe, slotType });
+        // Optionally add a supplementary meal
+        const supplementaryMeals = availableRecipes.filter(
+          (recipe) => recipe.is_supplementary && recipe.id !== selectedRecipe.id
+        );
+        if (supplementaryMeals.length > 0 && Math.random() < 0.5) {
+          const unusedSupplementary = supplementaryMeals.filter(
+            (recipe) => !recentMealPlan.some((r) => r.recipe.id === recipe.id)
+          );
+          const supplementaryMeal =
+            unusedSupplementary.length > 0
+              ? unusedSupplementary[
+                  Math.floor(Math.random() * unusedSupplementary.length)
+                ]
+              : supplementaryMeals[
+                  Math.floor(Math.random() * supplementaryMeals.length)
+                ];
+          mealPlan.push({ recipe: supplementaryMeal, slotType });
+        }
+      }
     }
-
-    // If we still need more meals, reuse recipes from the original pool
-    while (mealPlan.length < totalMealsNeeded) {
-      const randomIndex = Math.floor(Math.random() * recipes.length);
-      mealPlan.push(recipes[randomIndex]);
-    }
-
     return mealPlan;
   } catch (error) {
     console.error("Error generating meal plan:", error);

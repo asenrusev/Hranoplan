@@ -1,6 +1,34 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/utils/supabase";
 
+interface Ingredient {
+  id: string;
+  name: string;
+  amount: number;
+  unit: string;
+}
+
+interface Recipe {
+  id: string;
+  ingredients: Ingredient[];
+  // Add other recipe fields as needed
+}
+
+interface MealPlanRecipe {
+  recipes: Recipe;
+  day_of_week: number;
+  id: string;
+  meal_type: string;
+}
+
+interface MealPlan {
+  id: string;
+  days: number;
+  servingsPerDay: number;
+  meal_plan_recipes: MealPlanRecipe[];
+  // Add other meal plan fields as needed
+}
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -9,41 +37,58 @@ export async function GET(
     const { id } = await params;
     const planId = id;
 
-    // Fetch meal plan details
-    const { data: planData, error: planError } = await supabase
+    // Fetch meal plan with recipes in a single query
+    const { data, error } = await supabase
       .from("meal_plans")
-      .select("*")
-      .eq("id", planId)
-      .single();
-
-    if (planError) {
-      console.error("Error fetching meal plan:", planError);
-      throw planError;
-    }
-
-    // Fetch meal plan recipes
-    const { data: recipesData, error: recipesError } = await supabase
-      .from("meal_plan_recipes")
       .select(
         `
         *,
-        recipes (*)
+        meal_plan_recipes (
+          *,
+          recipes (*)
+        )
       `
       )
-      .eq("meal_plan_id", planId)
-      .order("day_of_week", { ascending: true })
-      .order("id", { ascending: true }); // Ensure deterministic order
+      .eq("id", planId)
+      .single();
 
-    if (recipesError) {
-      console.error("Error fetching meal plan recipes:", recipesError);
-      throw recipesError;
+    if (error) {
+      console.error("Error fetching meal plan:", error);
+      throw error;
     }
 
+    const typedData = data as MealPlan;
+
+    // Extract plan data and recipes
+    const planData = {
+      id: typedData.id,
+      days: typedData.days,
+      servingsPerDay: typedData.servingsPerDay,
+      // ... copy other meal_plans fields you need
+    };
+
     // Flat, ordered array of valid recipes
-    const mealPlan = Array.isArray(recipesData)
-      ? recipesData
-          .map((row) => row.recipes)
-          .filter((r) => !!r && Array.isArray(r.ingredients))
+    const mealPlan = Array.isArray(typedData.meal_plan_recipes)
+      ? typedData.meal_plan_recipes
+          .map((row: { recipes: Recipe; meal_type: string }) => {
+            if (!row.recipes || !Array.isArray(row.recipes.ingredients))
+              return null;
+            return {
+              recipe: row.recipes,
+              slotType: row.meal_type as "breakfast" | "lunch" | "dinner",
+            };
+          })
+          .filter(
+            (
+              r: {
+                recipe: Recipe;
+                slotType: "breakfast" | "lunch" | "dinner";
+              } | null
+            ): r is {
+              recipe: Recipe;
+              slotType: "breakfast" | "lunch" | "dinner";
+            } => !!r
+          )
       : [];
 
     // Ensure planData has days and servingsPerDay

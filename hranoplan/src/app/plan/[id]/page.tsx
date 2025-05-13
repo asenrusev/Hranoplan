@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import {
-  Recipe,
   generateShoppingList,
   ShoppingListItem,
+  MealPlanSlot,
 } from "@/utils/recipeUtils";
 import Link from "next/link";
 import { track } from "@vercel/analytics";
@@ -20,6 +20,15 @@ const lightBg = "#F9FAF8";
 const accentGreen = "#2E5E4E";
 const accentRed = "#B94A48";
 
+const mealSlotLabels: Record<string, string> = {
+  breakfast: "Закуска",
+  lunch: "Обяд",
+  dinner: "Вечеря",
+};
+function getMealSlotLabel(slotType: string) {
+  return mealSlotLabels[slotType] || slotType;
+}
+
 interface MealPlan {
   id: string;
   name: string;
@@ -29,7 +38,7 @@ interface MealPlan {
   servingsPerDay: number;
   prepTime: string;
   excludedProducts: string[];
-  meals: Recipe[];
+  meals: MealPlanSlot[];
 }
 
 export default function MealPlanPage() {
@@ -103,7 +112,9 @@ export default function MealPlanPage() {
 
   // Aggregate shopping list from all meals
   const shoppingList: ShoppingListItem[] = generateShoppingList(
-    Array.isArray(mealPlan.meals) ? mealPlan.meals : []
+    Array.isArray(mealPlan.meals)
+      ? mealPlan.meals.map((slot) => slot.recipe)
+      : []
   );
 
   // Handlers for toggling
@@ -300,7 +311,7 @@ export default function MealPlanPage() {
         {mealPlan.meals && mealPlan.meals.length > 0 ? (
           <div className="space-y-8">
             {Array.from({ length: mealPlan.days }, (_, dayIndex) => {
-              const dayMeals = mealPlan.meals.slice(
+              const dayMeals: MealPlanSlot[] = mealPlan.meals.slice(
                 dayIndex * mealPlan.servingsPerDay,
                 (dayIndex + 1) * mealPlan.servingsPerDay
               );
@@ -328,122 +339,144 @@ export default function MealPlanPage() {
                   >
                     {openDays[dayIndex] && (
                       <div className="space-y-6">
-                        {dayMeals.map((meal, mealIndex) => {
-                          const mealKey = `${dayIndex}-${mealIndex}`;
-                          return (
-                            <div
-                              key={meal.id}
-                              className="bg-[var(--pastelGreen)]/60 p-4 rounded-lg shadow-sm"
-                            >
-                              <button
-                                className="w-full text-left text-xl font-semibold mb-2 focus:outline-none flex items-center justify-between rounded-md bg-[var(--blushRed)] hover:bg-[var(--blushRed)]/80 transition-colors duration-200 px-3 py-2 text-[var(--accentRed)]"
-                                style={{
-                                  background: blushRed,
-                                  color: accentRed,
-                                }}
-                                onClick={() => toggleMeal(dayIndex, mealIndex)}
-                              >
-                                <span>
-                                  Ястие {mealIndex + 1}: {meal.name}
-                                </span>
-                                <span className="ml-2">
-                                  {openMeals[mealKey] ? "▲" : "▼"}
-                                </span>
-                              </button>
+                        {dayMeals.map(
+                          (mealSlot: MealPlanSlot, mealIndex: number) => {
+                            const mealKey = `${dayIndex}-${mealIndex}`;
+                            return (
                               <div
-                                className={`transition-all duration-500 ease-in-out ${
-                                  openMeals[mealKey]
-                                    ? "opacity-100"
-                                    : "max-h-0 opacity-0 overflow-hidden"
-                                }`}
+                                key={mealSlot.recipe.id}
+                                className="bg-[var(--pastelGreen)]/60 p-4 rounded-lg shadow-sm"
                               >
-                                {openMeals[mealKey] && (
-                                  <div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                      <div>
-                                        <h5 className="font-medium mb-2 text-[#222]">
-                                          Съставки:
-                                        </h5>
-                                        <ul className="list-disc list-inside text-[#222]">
-                                          {Array.isArray(meal.ingredients)
-                                            ? meal.ingredients.map(
-                                                (ingredient, i) =>
-                                                  ingredient &&
-                                                  typeof ingredient ===
-                                                    "object" &&
-                                                  !Array.isArray(ingredient) &&
-                                                  "name" in ingredient ? (
-                                                    <li key={i}>
-                                                      {
-                                                        (
-                                                          ingredient as {
-                                                            name: string;
-                                                          }
-                                                        ).name
-                                                      }
-                                                    </li>
-                                                  ) : null
-                                              )
-                                            : null}
-                                        </ul>
-                                      </div>
-                                      <div>
-                                        <h5 className="font-medium mb-2 text-[#222]">
-                                          Инструкции:
-                                        </h5>
-                                        <ol className="list-decimal list-inside text-[#222]">
-                                          {meal.instructions.map(
-                                            (instruction, i) => (
-                                              <li key={i}>{instruction}</li>
+                                <button
+                                  className="w-full text-left text-xl font-semibold mb-2 focus:outline-none flex items-center justify-between rounded-md bg-[var(--blushRed)] hover:bg-[var(--blushRed)]/80 transition-colors duration-200 px-3 py-2 text-[var(--accentRed)]"
+                                  style={{
+                                    background: blushRed,
+                                    color: accentRed,
+                                  }}
+                                  onClick={() =>
+                                    toggleMeal(dayIndex, mealIndex)
+                                  }
+                                >
+                                  <span>
+                                    {getMealSlotLabel(mealSlot.slotType)}:{" "}
+                                    {mealSlot.recipe.name}
+                                  </span>
+                                  <span className="ml-2">
+                                    {openMeals[mealKey] ? "▲" : "▼"}
+                                  </span>
+                                </button>
+                                <div
+                                  className={`transition-all duration-500 ease-in-out ${
+                                    openMeals[mealKey]
+                                      ? "opacity-100"
+                                      : "max-h-0 opacity-0 overflow-hidden"
+                                  }`}
+                                >
+                                  {openMeals[mealKey] && (
+                                    <div>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <h5 className="font-medium mb-2 text-[#222]">
+                                            Съставки:
+                                          </h5>
+                                          <ul className="list-disc list-inside text-[#222]">
+                                            {Array.isArray(
+                                              mealSlot.recipe.ingredients
                                             )
-                                          )}
-                                        </ol>
+                                              ? mealSlot.recipe.ingredients.map(
+                                                  (ingredient, i) => {
+                                                    if (
+                                                      ingredient &&
+                                                      typeof ingredient ===
+                                                        "object" &&
+                                                      !Array.isArray(
+                                                        ingredient
+                                                      ) &&
+                                                      "name" in ingredient
+                                                    ) {
+                                                      return (
+                                                        <li key={i}>
+                                                          {
+                                                            (
+                                                              ingredient as {
+                                                                name: string;
+                                                              }
+                                                            ).name
+                                                          }
+                                                        </li>
+                                                      );
+                                                    }
+                                                    return null;
+                                                  }
+                                                )
+                                              : null}
+                                          </ul>
+                                        </div>
+                                        <div>
+                                          <h5 className="font-medium mb-2 text-[#222]">
+                                            Инструкции:
+                                          </h5>
+                                          <ol className="list-decimal list-inside text-[#222]">
+                                            {mealSlot.recipe.instructions.map(
+                                              (
+                                                instruction: string,
+                                                i: number
+                                              ) => (
+                                                <li key={i}>{instruction}</li>
+                                              )
+                                            )}
+                                          </ol>
+                                        </div>
+                                      </div>
+                                      <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
+                                          <p className="text-sm text-gray-600">
+                                            Време за приготвяне
+                                          </p>
+                                          <p className="font-medium">
+                                            {mealSlot.recipe.prep_time ?? "?"}{" "}
+                                            мин
+                                          </p>
+                                        </div>
+                                        <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
+                                          <p className="text-sm text-gray-600">
+                                            Време за готвене
+                                          </p>
+                                          <p className="font-medium">
+                                            {mealSlot.recipe.cook_time ?? "?"}{" "}
+                                            мин
+                                          </p>
+                                        </div>
+                                        <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
+                                          <p className="text-sm text-gray-600">
+                                            Общо време
+                                          </p>
+                                          <p className="font-medium">
+                                            {mealSlot.recipe.prep_time !=
+                                              null &&
+                                            mealSlot.recipe.cook_time != null
+                                              ? mealSlot.recipe.prep_time +
+                                                mealSlot.recipe.cook_time
+                                              : "?"}{" "}
+                                            мин
+                                          </p>
+                                        </div>
+                                        <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
+                                          <p className="text-sm text-gray-600">
+                                            Порции
+                                          </p>
+                                          <p className="font-medium">
+                                            {mealSlot.recipe.servings}
+                                          </p>
+                                        </div>
                                       </div>
                                     </div>
-                                    <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-                                      <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
-                                        <p className="text-sm text-gray-600">
-                                          Време за приготвяне
-                                        </p>
-                                        <p className="font-medium">
-                                          {meal.prep_time ?? "?"} мин
-                                        </p>
-                                      </div>
-                                      <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
-                                        <p className="text-sm text-gray-600">
-                                          Време за готвене
-                                        </p>
-                                        <p className="font-medium">
-                                          {meal.cook_time ?? "?"} мин
-                                        </p>
-                                      </div>
-                                      <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
-                                        <p className="text-sm text-gray-600">
-                                          Общо време
-                                        </p>
-                                        <p className="font-medium">
-                                          {meal.prep_time != null &&
-                                          meal.cook_time != null
-                                            ? meal.prep_time + meal.cook_time
-                                            : "?"}{" "}
-                                          мин
-                                        </p>
-                                      </div>
-                                      <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
-                                        <p className="text-sm text-gray-600">
-                                          Порции
-                                        </p>
-                                        <p className="font-medium">
-                                          {meal.servings}
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          }
+                        )}
                       </div>
                     )}
                   </div>
