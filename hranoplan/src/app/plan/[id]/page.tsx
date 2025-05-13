@@ -309,7 +309,7 @@ export default function MealPlanPage() {
           Дневен план
         </h2>
         {mealPlan.meals && mealPlan.meals.length > 0 ? (
-          <div className="space-y-8">
+          <div className="space-y-4">
             {Array.from({ length: mealPlan.days }, (_, dayIndex) => {
               const dayMeals: MealPlanSlot[] = mealPlan.meals.slice(
                 dayIndex * mealPlan.servingsPerDay,
@@ -338,7 +338,7 @@ export default function MealPlanPage() {
                     }`}
                   >
                     {openDays[dayIndex] && (
-                      <div className="space-y-6">
+                      <div className="space-y-3">
                         {dayMeals.map(
                           (mealSlot: MealPlanSlot, mealIndex: number) => {
                             const mealKey = `${dayIndex}-${mealIndex}`;

@@ -21,9 +21,6 @@ export async function fetchRecipes(
   try {
     let query = supabase.from("recipes").select("*");
 
-    // Filter out supplementary recipes at the query level
-    query = query.eq("is_supplementary", false);
-
     // Filter by prep time if specified
     if (options.prepTime && options.prepTime !== "any") {
       const maxPrepTime = Number(options.prepTime);

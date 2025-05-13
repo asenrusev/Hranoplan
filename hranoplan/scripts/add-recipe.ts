@@ -38,6 +38,9 @@ interface Recipe {
   servings: number | null;
   image_url: string | null;
   tags: string[] | null;
+  is_breakfast: boolean;
+  is_lunch: boolean;
+  is_dinner: boolean;
 }
 
 function validateRecipe(recipe: Recipe): string[] {
@@ -92,6 +95,9 @@ async function addRecipe(recipe: Recipe) {
         servings: recipe.servings,
         image_url: recipe.image_url,
         tags: recipe.tags,
+        is_breakfast: recipe.is_breakfast,
+        is_lunch: recipe.is_lunch,
+        is_dinner: recipe.is_dinner,
       })
       .select()
       .single();
@@ -160,6 +166,9 @@ export const singleRecipe: Recipe = {
   servings: 2,
   image_url: null,
   tags: ["test"],
+  is_breakfast: false,
+  is_lunch: false,
+  is_dinner: false,
 };
 
 // For importing from a file:
