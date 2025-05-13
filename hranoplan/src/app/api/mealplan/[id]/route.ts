@@ -26,6 +26,7 @@ interface MealPlan {
   days: number;
   servingsPerDay: number;
   meal_plan_recipes: MealPlanRecipe[];
+  excludedProducts?: string[];
   // Add other meal plan fields as needed
 }
 
@@ -64,6 +65,7 @@ export async function GET(
       id: typedData.id,
       days: typedData.days,
       servingsPerDay: typedData.servingsPerDay,
+      excludedProducts: typedData.excludedProducts ?? [],
       // ... copy other meal_plans fields you need
     };
 

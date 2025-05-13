@@ -48,11 +48,12 @@ export async function fetchRecipes(
     if (options.excludedProducts && options.excludedProducts.length > 0) {
       const filtered = data.filter((recipe) => {
         const ingredients = recipe.ingredients as unknown as Ingredient[];
-        return !ingredients.some((ingredient) =>
+        const hasExcluded = ingredients.some((ingredient) =>
           options.excludedProducts!.some((excluded) =>
             ingredient.name.toLowerCase().includes(excluded.toLowerCase())
           )
         );
+        return !hasExcluded;
       });
       return filtered;
     }
