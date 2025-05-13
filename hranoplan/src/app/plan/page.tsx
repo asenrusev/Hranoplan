@@ -124,6 +124,11 @@ export default function PlanPage() {
         });
       }
 
+      // Store the last meal plan ID in localStorage
+      if (mealPlan?.data?.savedPlanId) {
+        localStorage.setItem("lastMealPlanId", mealPlan.data.savedPlanId);
+      }
+
       // Navigate to the plan page using the saved plan ID from the API
       router.push(`/plan/${mealPlan.data.savedPlanId}`);
     } catch (error) {
