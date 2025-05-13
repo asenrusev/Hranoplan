@@ -51,17 +51,9 @@ export async function fetchRecipes(
           )
         );
       });
-      console.log(
-        "fetchRecipes: filtered recipes after excludedProducts",
-        filtered.map((r) => r.name)
-      );
       return filtered;
     }
 
-    console.log(
-      "fetchRecipes: returning recipes",
-      data.map((r) => r.name)
-    );
     return data;
   } catch (error) {
     console.error("Error in fetchRecipes:", error);
@@ -107,15 +99,6 @@ export async function generateMealPlan(
   try {
     // Fetch all recipes that match the criteria
     const recipes = await fetchRecipes({ prepTime, excludedProducts });
-    console.log(
-      "generateMealPlan: all recipes",
-      recipes.map((r) => ({
-        name: r.name,
-        is_breakfast: r.is_breakfast,
-        is_lunch: r.is_lunch,
-        is_dinner: r.is_dinner,
-      }))
-    );
 
     if (recipes.length === 0) {
       throw new Error("No recipes found matching the criteria");
@@ -130,10 +113,6 @@ export async function generateMealPlan(
         // Get available recipes for this meal type (main or supplementary)
         const availableRecipes = recipes.filter(
           (recipe) => recipe[mealTypeField]
-        );
-        console.log(
-          `Day ${day + 1}, Slot ${slotType}: available recipes:`,
-          availableRecipes.map((r) => r.name)
         );
         if (availableRecipes.length === 0) {
           throw new Error(`No recipes found for meal type: ${slotType}`);
