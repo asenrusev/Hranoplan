@@ -1,0 +1,49 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Hranoplan Architecture
+
+## Core Technologies
+- Next.js 15 (App Router) with TypeScript
+- React 19
+- Supabase (Database & Auth)
+- Tailwind CSS
+- PWA Support
+
+## Architecture Patterns
+1. **API-First Design**
+   - All database operations must go through Next.js API routes
+   - API routes are located in `/app/api/*`
+   - Direct database access from client components is prohibited
+
+2. **Data Flow**
+   - Client → API Route → Supabase → Database
+   - Type-safe database operations using Supabase client
+   - Environment variables for configuration
+
+3. **Database Schema**
+   - Main tables: recipes, meal_plans, meal_plan_recipes
+   - Type definitions in `/utils/supabase.ts`
+   - Database migrations handled through Supabase
+
+4. **Application Structure**
+   - `/app` - Next.js app router pages and API routes
+   - `/utils` - Shared utilities and database client
+   - `/scripts` - Database setup and maintenance
+   - `/public` - Static assets
+
+5. **Security**
+   - Environment variables for sensitive data
+   - API route validation
+   - Supabase RLS policies
+   - Anonymous user support
+
+6. **Performance**
+   - Server components by default
+   - Client components only when necessary
+   - PWA for offline support
+   - Vercel Analytics integration
+
+This project uses NextJS with an API and Supabase as database. Whenever new implementation is needed, everything should go through the API before reaching the Database. It's a meal prep simple app.

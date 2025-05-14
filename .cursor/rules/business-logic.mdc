@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Business Logic
+
+## Meal Prep App Core Functionality
+
+### User Input Parameters
+- Days: Number of days to plan meals for (1-7)
+- Servings per day: Number of meals per day (1-5)
+- Prep time: Maximum preparation time per meal (15min, 30min, 1h, any)
+- Excluded products: List of ingredients to avoid in meal suggestions
+
+### Meal Plan Generation
+- Generates a meal plan based on user parameters
+- Each meal slot (breakfast, lunch, dinner) contains a recipe
+- Recipes are selected based on:
+  - Available ingredients (excluding user-specified products)
+  - Preparation time constraints
+  - Variety (tries to avoid repetition)
+  - Balanced nutrition
+
+### Shopping List
+- Automatically generated from all recipes in the meal plan
+- Aggregates ingredients across all meals
+- Combines quantities for the same ingredients
+- Can be copied or shared with others
+
+### Data Persistence
+- Last meal plan ID stored in localStorage
+- User preferences (excluded products, etc.) saved for future use
+- Meal plans stored in database for retrieval
