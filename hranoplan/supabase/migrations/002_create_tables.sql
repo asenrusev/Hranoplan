@@ -17,6 +17,7 @@ CREATE TABLE recipes (
     servings INTEGER,
     image_url TEXT,
     tags TEXT[],
+    is_snack BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

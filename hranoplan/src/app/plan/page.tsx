@@ -12,17 +12,26 @@ interface MealPlanFormData {
   days: number;
   servingsPerDay: number;
   prepTime: string;
-  excludedProducts: string[];
   anonymousUserId: string;
+  selectedRecipeIds: string[];
+}
+
+interface Recipe {
+  id: string;
+  name: string;
+  is_snack: boolean;
+  is_lunch: boolean;
+  is_breakfast: boolean;
+  is_dinner: boolean;
 }
 
 export default function PlanPage() {
   const [days, setDays] = useState<number>(1);
   const [servingsPerDay, setServingsPerDay] = useState<number>(1);
   const [prepTime, setPrepTime] = useState<string>("15");
-  const [excludedProducts, setExcludedProducts] = useState<string[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [selectedRecipeIds, setSelectedRecipeIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [showExclusions, setShowExclusions] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -32,90 +41,54 @@ export default function PlanPage() {
       setDays(parsedSettings.days || 1);
       setServingsPerDay(parsedSettings.servingsPerDay || 1);
       setPrepTime(parsedSettings.prepTime || "15");
-      setExcludedProducts(parsedSettings.excludedProducts || []);
+      setSelectedRecipeIds(parsedSettings.selectedRecipeIds || []);
     }
+    fetchRecipes();
   }, []);
 
-  const productCategories = [
-    {
-      name: "Зеленчуци",
-      items: [
-        "Маруля",
-        "Чушки",
-        "Моркови",
-        "Гъби",
-        "Броколи",
-        "Зеле",
-        "Лук",
-        "Картофи",
-      ],
-    },
-    {
-      name: "Месо и риба",
-      items: [
-        "Риба тон",
-        "Сьомга",
-        "Месо",
-        "Кайма",
-        "Карначета",
-        "Пържоли",
-        "Салам",
-      ],
-    },
-    {
-      name: "Млечни продукти",
-      items: [
-        "Сирене",
-        "Кашкавал",
-        "Кисело мляко",
-        "Прясно мляко",
-        "Сметана",
-        "Яйца",
-      ],
-    },
-    {
-      name: "Други",
-      items: [
-        "Царевица",
-        "Масло",
-        "Лимон",
-        "Доматен сос",
-        "Леща",
-        "Фасул",
-        "Грах",
-        "Кафяв ориз",
-        "Брашно",
-        "Мюсли",
-        "Мед",
-        "Принцеси",
-        "Кори за баница",
-        "Кускус",
-      ],
-    },
-  ];
+  const fetchRecipes = async () => {
+    try {
+      const res = await fetch("/api/recipes");
+      const data = await res.json();
+      setRecipes(data || []);
+      // Select all if not already selected
+      setSelectedRecipeIds((prev) =>
+        prev.length === 0 ? (data || []).map((r: Recipe) => r.id) : prev
+      );
+    } catch (err) {
+      console.error("Грешка при зареждане на рецептите:", err);
+    }
+  };
+
+  const groupedRecipes = {
+    breakfast: recipes.filter((r) => r.is_breakfast),
+    lunch: recipes.filter((r) => r.is_lunch),
+    dinner: recipes.filter((r) => r.is_dinner),
+    snack: recipes.filter((r) => r.is_snack),
+  };
+
+  const toggleRecipe = (id: string) => {
+    setSelectedRecipeIds((prev) =>
+      prev.includes(id) ? prev.filter((rid) => rid !== id) : [...prev, id]
+    );
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-
-    // Clear all meal plan related items from localStorage
     Object.keys(localStorage).forEach((key) => {
       if (key.startsWith("mealPlan-")) {
         localStorage.removeItem(key);
       }
     });
-
     const planData: MealPlanFormData = {
       days,
       servingsPerDay,
       prepTime,
-      excludedProducts,
       anonymousUserId: getAnonymousUserId(),
+      selectedRecipeIds,
     };
-
-    // Save settings for future use
     localStorage.setItem("mealPlanSettings", JSON.stringify(planData));
-
     try {
       const response = await fetch("/api/mealprep", {
         method: "POST",
@@ -124,64 +97,22 @@ export default function PlanPage() {
         },
         body: JSON.stringify(planData),
       });
-
       if (!response.ok) {
-        throw new Error("Failed to generate meal plan");
+        throw new Error("Неуспешно генериране на хранителен план");
       }
-
       const mealPlan = await response.json();
-      // Only track in production
       if (!isDevelopment) {
         track("click", {
           element: "generate_meal_plan",
         });
       }
-
-      // Store the last meal plan ID in localStorage
       if (mealPlan?.data?.savedPlanId) {
         localStorage.setItem("lastMealPlanId", mealPlan.data.savedPlanId);
       }
-
-      // Navigate to the plan page using the saved plan ID from the API
       router.push(`/plan/${mealPlan.data.savedPlanId}`);
     } catch (error) {
-      console.error("Error generating meal plan:", error);
+      console.error("Грешка при генериране на хранителен план:", error);
       setIsLoading(false);
-    }
-  };
-
-  const toggleProduct = (product: string) => {
-    setExcludedProducts((prev) =>
-      prev.includes(product)
-        ? prev.filter((p) => p !== product)
-        : [...prev, product]
-    );
-  };
-
-  const toggleCategory = (categoryName: string) => {
-    const category = productCategories.find((cat) => cat.name === categoryName);
-    if (!category) return;
-
-    const allCategoryProductsSelected = category.items.every((item) =>
-      excludedProducts.includes(item)
-    );
-
-    if (allCategoryProductsSelected) {
-      // If all products are selected, remove them all
-      setExcludedProducts((prev) =>
-        prev.filter((product) => !category.items.includes(product))
-      );
-    } else {
-      // If not all products are selected, add all products from the category
-      setExcludedProducts((prev) => {
-        const newProducts = [...prev];
-        category.items.forEach((item) => {
-          if (!newProducts.includes(item)) {
-            newProducts.push(item);
-          }
-        });
-        return newProducts;
-      });
     }
   };
 
@@ -262,65 +193,40 @@ export default function PlanPage() {
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">
-                Изключете Продукти
+                Изберете рецепти за включване в плана
               </label>
-              <button
-                type="button"
-                onClick={() => setShowExclusions((prev) => !prev)}
-                className="w-full mb-2 py-2 px-4 rounded-lg border border-[#E6F4EA] bg-[#F9FAF8] text-[#2E5E4E] font-semibold shadow-sm hover:bg-[#E6F4EA] transition-colors"
-                aria-expanded={showExclusions}
-                aria-controls="exclusion-list"
-              >
-                {showExclusions
-                  ? "Скрий списъка с продукти"
-                  : "Покажи списъка с продукти"}
-              </button>
-              <div
-                id="exclusion-list"
-                className={`transition-all duration-300 ${
-                  showExclusions
-                    ? "max-h-[1000px] opacity-100"
-                    : "max-h-0 opacity-0 overflow-hidden"
-                }`}
-              >
-                <div className="rounded-xl border border-[#E6F4EA] bg-[#F9FAF8] p-4 mt-2 shadow-inner">
-                  <div className="space-y-4">
-                    {productCategories.map((category) => (
-                      <div key={category.name} className="space-y-2">
+              {Object.entries({
+                Закуска: groupedRecipes.breakfast,
+                Обяд: groupedRecipes.lunch,
+                Вечеря: groupedRecipes.dinner,
+                Снак: groupedRecipes.snack,
+              }).map(([category, recs]) => (
+                <div key={category} className="mb-4">
+                  <div className="font-semibold text-[#2E5E4E] mb-2">
+                    {category}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {recs.length === 0 ? (
+                      <span className="text-gray-400">Няма рецепти</span>
+                    ) : (
+                      recs.map((recipe) => (
                         <button
+                          key={recipe.id}
                           type="button"
-                          onClick={() => toggleCategory(category.name)}
-                          className={`w-full text-left font-medium text-[#2E5E4E] hover:text-[#21806A] transition-colors duration-150 ${
-                            category.items.every((item) =>
-                              excludedProducts.includes(item)
-                            )
-                              ? "text-[#B94A48]"
-                              : ""
+                          onClick={() => toggleRecipe(recipe.id)}
+                          className={`px-3 py-1 rounded-full text-sm border transition-colors duration-150 ${
+                            selectedRecipeIds.includes(recipe.id)
+                              ? "bg-[#E6F4EA] text-[#2E5E4E] border-[#2E5E4E]"
+                              : "bg-gray-100 text-[#2E5E4E] border-[#E6F4EA] hover:bg-[#E6F4EA]"
                           }`}
                         >
-                          {category.name}
+                          {recipe.name}
                         </button>
-                        <div className="flex flex-wrap gap-2">
-                          {category.items.map((item) => (
-                            <button
-                              key={item}
-                              type="button"
-                              onClick={() => toggleProduct(item)}
-                              className={`px-3 py-1 rounded-full text-sm border transition-colors duration-150 ${
-                                excludedProducts.includes(item)
-                                  ? "bg-[#F9E6E6] text-[#B94A48] border-[#B94A48]"
-                                  : "bg-gray-100 text-[#2E5E4E] border-[#E6F4EA] hover:bg-[#E6F4EA]"
-                              }`}
-                            >
-                              {item}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+                      ))
+                    )}
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
           <button

@@ -24,6 +24,7 @@ const mealSlotLabels: Record<string, string> = {
   breakfast: "Закуска",
   lunch: "Обяд",
   dinner: "Вечеря",
+  snack: "Снак",
 };
 function getMealSlotLabel(slotType: string) {
   return mealSlotLabels[slotType] || slotType;
@@ -37,7 +38,6 @@ interface MealPlan {
   days: number;
   servingsPerDay: number;
   prepTime: string;
-  excludedProducts: string[];
   meals: MealPlanSlot[];
 }
 
@@ -64,11 +64,9 @@ export default function MealPlanPage() {
         }
 
         const { data } = await response.json();
-        console.log("API data.mealPlan:", data.mealPlan);
         setMealPlan({
           ...data.plan,
           prepTime: data.plan.prepTime ?? "",
-          excludedProducts: data.plan.excludedProducts ?? [],
           meals: Array.isArray(data.mealPlan) ? data.mealPlan : [],
         });
       } catch (error) {
@@ -109,6 +107,9 @@ export default function MealPlanPage() {
   if (!mealPlan) {
     return null;
   }
+
+  // Log the meals array before grouping
+  console.log("Frontend mealPlan.meals:", mealPlan.meals);
 
   // Aggregate shopping list from all meals
   const shoppingList: ShoppingListItem[] = generateShoppingList(
@@ -275,29 +276,6 @@ export default function MealPlanPage() {
               </p>
             )}
           </div>
-          <div className="bg-white p-4 rounded-xl shadow border border-[var(--pastelGreen)]">
-            <h2
-              className="text-lg font-semibold mb-2 text-[var(--accentGreen)]"
-              style={{ color: accentGreen }}
-            >
-              Изключени продукти
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {(mealPlan.excludedProducts || []).length > 0 ? (
-                (mealPlan.excludedProducts || []).map((product) => (
-                  <span
-                    key={product}
-                    className="px-3 py-1 bg-[var(--blushRed)] text-[var(--accentRed)] rounded-full text-sm"
-                    style={{ background: blushRed, color: accentRed }}
-                  >
-                    {product}
-                  </span>
-                ))
-              ) : (
-                <p className="text-gray-500 italic">Няма изключени продукти</p>
-              )}
-            </div>
-          </div>
         </div>
       </div>
       {/* Collapsible Daily Plan */}
@@ -311,9 +289,15 @@ export default function MealPlanPage() {
         {mealPlan.meals && mealPlan.meals.length > 0 ? (
           <div className="space-y-4">
             {Array.from({ length: mealPlan.days }, (_, dayIndex) => {
-              const dayMeals: MealPlanSlot[] = mealPlan.meals.slice(
-                dayIndex * mealPlan.servingsPerDay,
-                (dayIndex + 1) * mealPlan.servingsPerDay
+              const slotOrder = ["breakfast", "lunch", "dinner", "snack"];
+              const dayMeals = mealPlan.meals.filter(
+                (m) => m.dayIndex === dayIndex
+              );
+              const slotMap = Object.fromEntries(
+                dayMeals.map((m) => [m.slotType.trim().toLowerCase(), m])
+              );
+              const sortedDayMeals = slotOrder.map(
+                (type) => slotMap[type] || null
               );
               return (
                 <div
@@ -339,143 +323,145 @@ export default function MealPlanPage() {
                   >
                     {openDays[dayIndex] && (
                       <div className="space-y-3">
-                        {dayMeals.map(
-                          (mealSlot: MealPlanSlot, mealIndex: number) => {
-                            const mealKey = `${dayIndex}-${mealIndex}`;
-                            return (
-                              <div
-                                key={mealSlot.recipe.id}
-                                className="bg-[var(--pastelGreen)]/60 p-4 rounded-lg shadow-sm"
+                        {sortedDayMeals.map((mealSlot, mealIndex) =>
+                          mealSlot ? (
+                            <div
+                              key={`${dayIndex}-${mealSlot.slotType}-${mealSlot.recipe.id}`}
+                              className="bg-[var(--pastelGreen)]/60 p-4 rounded-lg shadow-sm"
+                            >
+                              <button
+                                className="w-full text-left text-xl font-semibold mb-2 focus:outline-none flex items-center justify-between rounded-md bg-[var(--blushRed)] hover:bg-[var(--blushRed)]/80 transition-colors duration-200 px-3 py-2 text-[var(--accentRed)]"
+                                style={{
+                                  background: blushRed,
+                                  color: accentRed,
+                                }}
+                                onClick={() => toggleMeal(dayIndex, mealIndex)}
                               >
-                                <button
-                                  className="w-full text-left text-xl font-semibold mb-2 focus:outline-none flex items-center justify-between rounded-md bg-[var(--blushRed)] hover:bg-[var(--blushRed)]/80 transition-colors duration-200 px-3 py-2 text-[var(--accentRed)]"
-                                  style={{
-                                    background: blushRed,
-                                    color: accentRed,
-                                  }}
-                                  onClick={() =>
-                                    toggleMeal(dayIndex, mealIndex)
-                                  }
-                                >
-                                  <span>
-                                    {getMealSlotLabel(mealSlot.slotType)}:{" "}
-                                    {mealSlot.recipe.name}
-                                  </span>
-                                  <span className="ml-2">
-                                    {openMeals[mealKey] ? "▲" : "▼"}
-                                  </span>
-                                </button>
-                                <div
-                                  className={`transition-all duration-500 ease-in-out ${
-                                    openMeals[mealKey]
-                                      ? "opacity-100"
-                                      : "max-h-0 opacity-0 overflow-hidden"
-                                  }`}
-                                >
-                                  {openMeals[mealKey] && (
-                                    <div>
-                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                          <h5 className="font-medium mb-2 text-[#222]">
-                                            Съставки:
-                                          </h5>
-                                          <ul className="list-disc list-inside text-[#222]">
-                                            {Array.isArray(
-                                              mealSlot.recipe.ingredients
-                                            )
-                                              ? mealSlot.recipe.ingredients.map(
-                                                  (ingredient, i) => {
-                                                    if (
-                                                      ingredient &&
-                                                      typeof ingredient ===
-                                                        "object" &&
-                                                      !Array.isArray(
-                                                        ingredient
-                                                      ) &&
-                                                      "name" in ingredient
-                                                    ) {
-                                                      return (
-                                                        <li key={i}>
-                                                          {
-                                                            (
-                                                              ingredient as {
-                                                                name: string;
-                                                              }
-                                                            ).name
-                                                          }
-                                                        </li>
-                                                      );
-                                                    }
-                                                    return null;
+                                <span>
+                                  {getMealSlotLabel(mealSlot.slotType)}:{" "}
+                                  {mealSlot.recipe.name}
+                                </span>
+                                <span className="ml-2">
+                                  {openMeals[`${dayIndex}-${mealIndex}`]
+                                    ? "▲"
+                                    : "▼"}
+                                </span>
+                              </button>
+                              <div
+                                className={`transition-all duration-500 ease-in-out ${
+                                  openMeals[`${dayIndex}-${mealIndex}`]
+                                    ? "opacity-100"
+                                    : "max-h-0 opacity-0 overflow-hidden"
+                                }`}
+                              >
+                                {openMeals[`${dayIndex}-${mealIndex}`] && (
+                                  <div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <h5 className="font-medium mb-2 text-[#222]">
+                                          Съставки:
+                                        </h5>
+                                        <ul className="list-disc list-inside text-[#222]">
+                                          {Array.isArray(
+                                            mealSlot.recipe.ingredients
+                                          )
+                                            ? mealSlot.recipe.ingredients.map(
+                                                (ingredient, i) => {
+                                                  if (
+                                                    ingredient &&
+                                                    typeof ingredient ===
+                                                      "object" &&
+                                                    !Array.isArray(
+                                                      ingredient
+                                                    ) &&
+                                                    "name" in ingredient
+                                                  ) {
+                                                    return (
+                                                      <li key={i}>
+                                                        {
+                                                          (
+                                                            ingredient as {
+                                                              name: string;
+                                                            }
+                                                          ).name
+                                                        }
+                                                      </li>
+                                                    );
                                                   }
-                                                )
-                                              : null}
-                                          </ul>
-                                        </div>
-                                        <div>
-                                          <h5 className="font-medium mb-2 text-[#222]">
-                                            Инструкции:
-                                          </h5>
-                                          <ol className="list-decimal list-inside text-[#222]">
-                                            {mealSlot.recipe.instructions.map(
-                                              (
-                                                instruction: string,
-                                                i: number
-                                              ) => (
-                                                <li key={i}>{instruction}</li>
+                                                  return null;
+                                                }
                                               )
-                                            )}
-                                          </ol>
-                                        </div>
+                                            : null}
+                                        </ul>
                                       </div>
-                                      <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
-                                          <p className="text-sm text-gray-600">
-                                            Време за приготвяне
-                                          </p>
-                                          <p className="font-medium">
-                                            {mealSlot.recipe.prep_time ?? "?"}{" "}
-                                            мин
-                                          </p>
-                                        </div>
-                                        <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
-                                          <p className="text-sm text-gray-600">
-                                            Време за готвене
-                                          </p>
-                                          <p className="font-medium">
-                                            {mealSlot.recipe.cook_time ?? "?"}{" "}
-                                            мин
-                                          </p>
-                                        </div>
-                                        <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
-                                          <p className="text-sm text-gray-600">
-                                            Общо време
-                                          </p>
-                                          <p className="font-medium">
-                                            {mealSlot.recipe.prep_time !=
-                                              null &&
-                                            mealSlot.recipe.cook_time != null
-                                              ? mealSlot.recipe.prep_time +
-                                                mealSlot.recipe.cook_time
-                                              : "?"}{" "}
-                                            мин
-                                          </p>
-                                        </div>
-                                        <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
-                                          <p className="text-sm text-gray-600">
-                                            Порции
-                                          </p>
-                                          <p className="font-medium">
-                                            {mealSlot.recipe.servings}
-                                          </p>
-                                        </div>
+                                      <div>
+                                        <h5 className="font-medium mb-2 text-[#222]">
+                                          Инструкции:
+                                        </h5>
+                                        <ol className="list-decimal list-inside text-[#222]">
+                                          {mealSlot.recipe.instructions.map(
+                                            (
+                                              instruction: string,
+                                              i: number
+                                            ) => (
+                                              <li key={i}>{instruction}</li>
+                                            )
+                                          )}
+                                        </ol>
                                       </div>
                                     </div>
-                                  )}
-                                </div>
+                                    <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                                      <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
+                                        <p className="text-sm text-gray-600">
+                                          Време за приготвяне
+                                        </p>
+                                        <p className="font-medium">
+                                          {mealSlot.recipe.prep_time ?? "?"} мин
+                                        </p>
+                                      </div>
+                                      <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
+                                        <p className="text-sm text-gray-600">
+                                          Време за готвене
+                                        </p>
+                                        <p className="font-medium">
+                                          {mealSlot.recipe.cook_time ?? "?"} мин
+                                        </p>
+                                      </div>
+                                      <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
+                                        <p className="text-sm text-gray-600">
+                                          Общо време
+                                        </p>
+                                        <p className="font-medium">
+                                          {mealSlot.recipe.prep_time != null &&
+                                          mealSlot.recipe.cook_time != null
+                                            ? mealSlot.recipe.prep_time +
+                                              mealSlot.recipe.cook_time
+                                            : "?"}{" "}
+                                          мин
+                                        </p>
+                                      </div>
+                                      <div className="bg-white p-2 rounded border border-[var(--pastelGreen)] text-[#222]">
+                                        <p className="text-sm text-gray-600">
+                                          Порции
+                                        </p>
+                                        <p className="font-medium">
+                                          {mealSlot.recipe.servings}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
-                            );
-                          }
+                            </div>
+                          ) : (
+                            <div
+                              key={`${dayIndex}-${slotOrder[mealIndex]}`}
+                              className="bg-gray-100 p-4 rounded-lg shadow-sm text-gray-400 italic"
+                            >
+                              {getMealSlotLabel(slotOrder[mealIndex])}: Няма
+                              избрана рецепта
+                            </div>
+                          )
                         )}
                       </div>
                     )}

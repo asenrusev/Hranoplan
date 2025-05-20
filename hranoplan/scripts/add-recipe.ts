@@ -1,12 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
-import fs from "fs";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-
-// Get __dirname equivalent in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 // Load environment variables
 dotenv.config();
@@ -41,6 +34,7 @@ interface Recipe {
   is_breakfast: boolean;
   is_lunch: boolean;
   is_dinner: boolean;
+  is_snack?: boolean;
 }
 
 function validateRecipe(recipe: Recipe): string[] {
@@ -98,6 +92,7 @@ async function addRecipe(recipe: Recipe) {
         is_breakfast: recipe.is_breakfast,
         is_lunch: recipe.is_lunch,
         is_dinner: recipe.is_dinner,
+        is_snack: recipe.is_snack,
       })
       .select()
       .single();
@@ -115,40 +110,10 @@ async function addRecipe(recipe: Recipe) {
   }
 }
 
-async function addRecipesFromFile(filePath: string) {
-  try {
-    const content = fs.readFileSync(filePath, "utf-8");
-    const recipes = JSON.parse(content);
-
-    if (!Array.isArray(recipes)) {
-      console.error("File must contain an array of recipes");
-      return;
-    }
-
-    let successCount = 0;
-    let failureCount = 0;
-
-    for (const recipe of recipes) {
-      const success = await addRecipe(recipe);
-      if (success) {
-        successCount++;
-      } else {
-        failureCount++;
-      }
-    }
-
-    console.log(`\nImport complete:`);
-    console.log(`Successfully added: ${successCount} recipes`);
-    console.log(`Failed to add: ${failureCount} recipes`);
-  } catch (error) {
-    console.error("Error reading or parsing file:", error);
-  }
-}
-
 async function main() {
-  const testRecipesPath = join(__dirname, "test-recipes.json");
-  console.log("Starting recipe import...");
-  await addRecipesFromFile(testRecipesPath);
+  // const testRecipesPath = join(__dirname, "test-recipes.json");
+  // console.log("Starting recipe import...");
+  // await addRecipesFromFile(testRecipesPath);
 }
 
 // Run the script
@@ -171,9 +136,53 @@ export const singleRecipe: Recipe = {
   is_dinner: false,
 };
 
+// For adding multiple recipes inline:
+export const recipeList: Recipe[] = [
+  {
+    name: "Таратор",
+    description:
+      "Класическа българска студена супа с кисело мляко, краставици и копър.",
+    ingredients: [
+      { name: "Кисело мляко", amount: 400, unit: "г" },
+      { name: "Краставица", amount: 1, unit: "брой" },
+      { name: "Чесън", amount: 1, unit: "скилидка" },
+    ],
+    instructions: [
+      "Обелете и нарежете краставицата на малки кубчета.",
+      "Смесете киселото мляко с водата, разбъркайте добре.",
+      "Добавете нарязаната краставица, счукания чесън, копъра, орехите и солта.",
+      "Разбъркайте всичко и добавете зехтина.",
+      "Охладете и сервирайте студено.",
+    ],
+    prep_time: 10,
+    cook_time: 0,
+    servings: 2,
+    image_url: null,
+    tags: ["супа", "традиционна", "лято"],
+    is_breakfast: false,
+    is_lunch: true,
+    is_dinner: true,
+    is_snack: false,
+  },
+];
+
+async function addRecipeList(recipes: Recipe[]) {
+  let successCount = 0;
+  let failureCount = 0;
+  for (const recipe of recipes) {
+    const success = await addRecipe(recipe);
+    if (success) successCount++;
+    else failureCount++;
+  }
+  console.log(`\nInline import complete:`);
+  console.log(`Successfully added: ${successCount} recipes`);
+  console.log(`Failed to add: ${failureCount} recipes`);
+}
+
+// Uncomment to run inline import:
+addRecipeList(recipeList);
+
 // For importing from a file:
 // addRecipesFromFile(path.join(__dirname, "recipes.json"));
 
-// Uncomment one of these to run:
-// addRecipe(singleRecipe);
-// addRecipesFromFile(path.join(__dirname, "recipes.json"));
+// main().catch(console.error);

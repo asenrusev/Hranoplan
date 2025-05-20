@@ -6,8 +6,8 @@ interface MealPlanRequestData {
   days: number;
   servingsPerDay: number;
   prepTime: string;
-  excludedProducts: string[];
   anonymousUserId: string;
+  selectedRecipeIds: string[];
 }
 
 export async function POST(request: Request) {
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
       data.days,
       data.servingsPerDay,
       data.prepTime,
-      data.excludedProducts
+      data.selectedRecipeIds
     );
 
     // Calculate start and end dates
@@ -51,7 +51,6 @@ export async function POST(request: Request) {
         days: data.days,
         servingsPerDay: data.servingsPerDay,
         prepTime: data.prepTime,
-        excludedProducts: data.excludedProducts,
       })
       .select()
       .single();
@@ -62,10 +61,10 @@ export async function POST(request: Request) {
     }
 
     // Save meal plan recipes
-    const mealPlanRecipes = mealPlan.map((slot, index) => ({
+    const mealPlanRecipes = mealPlan.map((slot) => ({
       meal_plan_id: savedMealPlan.id,
       recipe_id: slot.recipe.id,
-      day_of_week: Math.floor(index / data.servingsPerDay),
+      day_of_week: slot.dayIndex,
       meal_type: slot.slotType,
     }));
 

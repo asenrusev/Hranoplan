@@ -27,7 +27,6 @@ interface MealPlan {
   servingsPerDay: number;
   prepTime: string;
   meal_plan_recipes: MealPlanRecipe[];
-  excludedProducts?: string[];
   // Add other meal plan fields as needed
 }
 
@@ -67,30 +66,42 @@ export async function GET(
       days: typedData.days,
       servingsPerDay: typedData.servingsPerDay,
       prepTime: typedData.prepTime,
-      excludedProducts: typedData.excludedProducts ?? [],
       // ... copy other meal_plans fields you need
     };
 
     // Flat, ordered array of valid recipes
     const mealPlan = Array.isArray(typedData.meal_plan_recipes)
       ? typedData.meal_plan_recipes
-          .map((row: { recipes: Recipe; meal_type: string }) => {
-            if (!row.recipes || !Array.isArray(row.recipes.ingredients))
-              return null;
-            return {
-              recipe: row.recipes,
-              slotType: row.meal_type as "breakfast" | "lunch" | "dinner",
-            };
-          })
+          .map(
+            (row: {
+              recipes: Recipe;
+              meal_type: string;
+              day_of_week: number;
+            }) => {
+              if (!row.recipes || !Array.isArray(row.recipes.ingredients))
+                return null;
+              return {
+                recipe: row.recipes,
+                slotType: row.meal_type as
+                  | "breakfast"
+                  | "lunch"
+                  | "dinner"
+                  | "snack",
+                dayIndex: row.day_of_week,
+              };
+            }
+          )
           .filter(
             (
               r: {
                 recipe: Recipe;
-                slotType: "breakfast" | "lunch" | "dinner";
+                slotType: "breakfast" | "lunch" | "dinner" | "snack";
+                dayIndex: number;
               } | null
             ): r is {
               recipe: Recipe;
-              slotType: "breakfast" | "lunch" | "dinner";
+              slotType: "breakfast" | "lunch" | "dinner" | "snack";
+              dayIndex: number;
             } => !!r
           )
       : [];
@@ -107,7 +118,6 @@ export async function GET(
         { status: 500 }
       );
     }
-
     return NextResponse.json({
       success: true,
       data: {
